@@ -232,8 +232,9 @@ function renderCalendar() {
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
       <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
         const color = eventColors[ev.subject] || eventColors.Mates;
-        const label = ev.time ? 'labelled' : '';
-        return `<span class="event-pill ${label}" style="background:${color}; color:${ev.time ? '#fff' : 'transparent'}">${ev.time ? ev.subject : ''}</span>`;
+        const label = ev.subject ? 'labelled' : '';
+        const text = ev.subject || '';
+        return `<span class="event-pill ${label}" style="background:${color}; color:#fff">${text}</span>`;
       }).join('')}</div>
     `;
     if (isCurrentMonth) {

@@ -395,6 +395,7 @@ body {
   display: grid;
   place-items: center;
   border-radius: 18px;
+  z-index: 2;
 }
 
 .event-form-card {
