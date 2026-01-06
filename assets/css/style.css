@@ -388,6 +388,28 @@ body {
   height: 48px;
 }
 
+ codex/create-webpage-based-on-provided-images-k8qlu6
+.event-form-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  z-index: 2;
+}
+
+.event-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  width: min(420px, 90vw);
+  box-shadow: var(--shadow);
+  border: 1px solid #e2e5ec;
+}
+
+=======
+main
 .materials-panel .breadcrumb {
   font-weight: 700;
   color: var(--primary);

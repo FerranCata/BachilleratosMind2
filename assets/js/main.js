@@ -232,8 +232,14 @@ function renderCalendar() {
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
       <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
         const color = eventColors[ev.subject] || eventColors.Mates;
+ codex/create-webpage-based-on-provided-images-k8qlu6
+        const label = ev.subject ? 'labelled' : '';
+        const text = ev.subject || '';
+        return `<span class="event-pill ${label}" style="background:${color}; color:#fff">${text}</span>`;
+
         const label = ev.time ? 'labelled' : '';
         return `<span class="event-pill ${label}" style="background:${color}; color:${ev.time ? '#fff' : 'transparent'}">${ev.time ? ev.subject : ''}</span>`;
+ main
       }).join('')}</div>
     `;
     if (isCurrentMonth) {
@@ -276,6 +282,58 @@ function formatDate(iso) {
   return date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
 }
 
+¡ codex/create-webpage-based-on-provided-images-k8qlu6
+function toggleEventForm(show) {
+  const overlay = document.getElementById('eventFormOverlay');
+  const dateLabel = document.getElementById('eventFormDate');
+  const subjectInput = document.getElementById('eventSubject');
+  const timeInput = document.getElementById('eventTime');
+  if (show) {
+    overlay.classList.remove('d-none');
+    dateLabel.textContent = state.selectedDate ? formatDate(state.selectedDate) : 'Selecciona una fecha';
+    subjectInput.value = '';
+    timeInput.value = '';
+    subjectInput.focus();
+  } else {
+    overlay.classList.add('d-none');
+  }
+}
+
+function handleAddEvent() {
+  const addBtn = document.getElementById('addEventBtn');
+  const form = document.getElementById('eventForm');
+  const cancelBtn = document.getElementById('cancelEvent');
+  const closeBtn = document.getElementById('closeEventForm');
+
+  addBtn.addEventListener('click', () => {
+    if (!state.selectedDate) {
+      const todayIso = new Date().toISOString().split('T')[0];
+      state.selectedDate = todayIso;
+      renderCalendar();
+    }
+    toggleEventForm(true);
+  });
+
+  const closeForm = () => toggleEventForm(false);
+  cancelBtn.addEventListener('click', closeForm);
+  closeBtn.addEventListener('click', closeForm);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!state.selectedDate) return;
+    const subject = document.getElementById('eventSubject').value.trim() || 'Nuevo evento';
+    const time = document.getElementById('eventTime').value.trim();
+    const iso = state.selectedDate;
+    if (!calendarEvents[iso]) calendarEvents[iso] = [];
+    calendarEvents[iso].push({ subject, time });
+    toggleEventForm(false);
+    renderCalendar();
+    renderDayEvents();
+  });
+}
+
+
+ main
 function renderMaterials() {
   const container = document.getElementById('materialsList');
   container.innerHTML = materials.map(item => `
@@ -478,6 +536,10 @@ function init() {
   initCommTabs();
   renderChat();
   setupMessageInput();
+ codex/create-webpage-based-on-provided-images-k8qlu6
+  handleAddEvent();
+
+ main
 }
 
 document.addEventListener('DOMContentLoaded', init);

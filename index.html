@@ -81,7 +81,37 @@
           </div>
           <div class="calendar-grid" id="calendarGrid"></div>
           <div class="calendar-events" id="calendarEvents"></div>
+codex/create-webpage-based-on-provided-images-k8qlu6
+          <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i></button>
+
+          <div class="event-form-overlay d-none" id="eventFormOverlay">
+            <div class="event-form-card">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <p class="text-muted small mb-1">Nueva actividad en</p>
+                  <h5 class="mb-0" id="eventFormDate"></h5>
+                </div>
+                <button class="icon-btn" id="closeEventForm" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <form id="eventForm">
+                <div class="mb-2">
+                  <label class="form-label small fw-semibold">Asignatura / Título</label>
+                  <input type="text" class="form-control" id="eventSubject" placeholder="Ej: Castellano" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Horario</label>
+                  <input type="text" class="form-control" id="eventTime" placeholder="17:00 - 18:00">
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" id="cancelEvent">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Añadir</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <button class="fab" title="Añadir evento"><i class="fa-solid fa-plus"></i></button>
+ main
         </div>
       </section>
 
