@@ -151,6 +151,7 @@ const conversations = {
 
 function renderNews() {
   const container = document.getElementById('newsList');
+  if (!container) return;
   container.innerHTML = newsItems.map(item => `
     <div class="news-card">
       <img src="${item.image}" alt="${item.title}">
@@ -165,6 +166,7 @@ function renderNews() {
 
 function renderNotifications() {
   const container = document.getElementById('notificationList');
+  if (!container) return;
   container.innerHTML = notifications.map(n => `
     <div class="notification-item">
       <div class="notification-title">${n.title}</div>
@@ -194,6 +196,7 @@ function setupNavigation() {
 function fillSelectOptions() {
   const monthSelect = document.getElementById('monthSelect');
   const yearSelect = document.getElementById('yearSelect');
+  if (!monthSelect || !yearSelect) return;
   const months = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
   monthSelect.innerHTML = months.map((m, i) => `<option value="${i}">${m}</option>`).join('');
   const currentYear = new Date().getFullYear();
@@ -213,6 +216,7 @@ function fillSelectOptions() {
 
 function renderCalendar() {
   const grid = document.getElementById('calendarGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const firstDay = new Date(state.currentYear, state.currentMonth, 1);
   const startWeekday = firstDay.getDay() || 7; // Monday first
@@ -232,14 +236,9 @@ function renderCalendar() {
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
       <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
         const color = eventColors[ev.subject] || eventColors.Mates;
- codex/create-webpage-based-on-provided-images-k8qlu6
         const label = ev.subject ? 'labelled' : '';
         const text = ev.subject || '';
         return `<span class="event-pill ${label}" style="background:${color}; color:#fff">${text}</span>`;
-
-        const label = ev.time ? 'labelled' : '';
-        return `<span class="event-pill ${label}" style="background:${color}; color:${ev.time ? '#fff' : 'transparent'}">${ev.time ? ev.subject : ''}</span>`;
- main
       }).join('')}</div>
     `;
     if (isCurrentMonth) {
@@ -256,6 +255,7 @@ function renderCalendar() {
 
 function renderDayEvents() {
   const container = document.getElementById('calendarEvents');
+  if (!container) return;
   const dayEvents = calendarEvents[state.selectedDate] || [];
   if (!state.selectedDate) {
     container.innerHTML = '<div class="text-muted">Selecciona un día para ver eventos.</div>';
@@ -282,12 +282,12 @@ function formatDate(iso) {
   return date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
 }
 
-¡ codex/create-webpage-based-on-provided-images-k8qlu6
 function toggleEventForm(show) {
   const overlay = document.getElementById('eventFormOverlay');
   const dateLabel = document.getElementById('eventFormDate');
   const subjectInput = document.getElementById('eventSubject');
   const timeInput = document.getElementById('eventTime');
+  if (!overlay || !dateLabel || !subjectInput || !timeInput) return;
   if (show) {
     overlay.classList.remove('d-none');
     dateLabel.textContent = state.selectedDate ? formatDate(state.selectedDate) : 'Selecciona una fecha';
@@ -304,6 +304,7 @@ function handleAddEvent() {
   const form = document.getElementById('eventForm');
   const cancelBtn = document.getElementById('cancelEvent');
   const closeBtn = document.getElementById('closeEventForm');
+  if (!addBtn || !form || !cancelBtn || !closeBtn) return;
 
   addBtn.addEventListener('click', () => {
     if (!state.selectedDate) {
@@ -332,10 +333,9 @@ function handleAddEvent() {
   });
 }
 
-
- main
 function renderMaterials() {
   const container = document.getElementById('materialsList');
+  if (!container) return;
   container.innerHTML = materials.map(item => `
     <div class="material-item" style="margin-left:${item.level * 16}px">
       <div class="label ${item.bold ? 'fw-bold' : ''}">
@@ -349,6 +349,7 @@ function renderMaterials() {
 
 function renderClasses() {
   const carousel = document.getElementById('upcomingClasses');
+  if (!carousel) return;
   carousel.innerHTML = upcomingClasses.map(cls => `
     <div class="class-card">
       <h4>${cls.subject}</h4>
@@ -362,6 +363,7 @@ function renderClasses() {
   `).join('');
 
   const recorded = document.getElementById('recordedClasses');
+  if (!recorded) return;
   recorded.innerHTML = recordedClasses.map(cls => `
     <div class="recorded-item">
       <div class="title"><i class="fa-solid fa-video me-2"></i>${cls}</div>
@@ -372,12 +374,14 @@ function renderClasses() {
 
 function renderStore() {
   const pills = document.getElementById('categoryPills');
+  if (!pills) return;
   pills.innerHTML = storeCategories.map(cat => `
     <button class="category-btn ${state.storeCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}">${cat.label}</button>
   `).join('');
 
   const filtered = products.filter(p => state.storeCategory === 'all' || p.category === state.storeCategory);
   const grid = document.getElementById('tiendaGrid');
+  if (!grid) return;
   grid.innerHTML = filtered.map(p => `
     <div class="product-card" data-id="${p.id}">
       <div class="product-thumb"><i class="fa-regular fa-image"></i></div>
@@ -404,6 +408,7 @@ function renderStore() {
 
 function renderProductDetail() {
   const detail = document.getElementById('productDetail');
+  if (!detail) return;
   const product = state.selectedProduct;
   if (!product) {
     detail.classList.add('d-none');
@@ -434,6 +439,7 @@ function renderProductDetail() {
 
 function renderConversations() {
   const container = document.getElementById('conversationList');
+  if (!container) return;
   const list = conversations[state.currentRole];
   container.innerHTML = list.map(c => `
     <div class="conversation-item" data-id="${c.id}">
@@ -467,6 +473,7 @@ function renderConversations() {
 function renderChat() {
   const chatTitle = document.getElementById('chatTitle');
   const chatBody = document.getElementById('chatBody');
+  if (!chatTitle || !chatBody) return;
   const convo = state.conversations.active;
   if (!convo) {
     chatTitle.textContent = 'Selecciona una conversación';
@@ -493,6 +500,7 @@ function renderChat() {
 function setupMessageInput() {
   const input = document.getElementById('messageInput');
   const send = document.getElementById('sendMessage');
+  if (!input || !send) return;
   const sendHandler = () => {
     if (!state.conversations.active || !input.value.trim()) return;
     state.conversations.active.messages.push({ from: 'me', text: input.value.trim() });
@@ -536,10 +544,7 @@ function init() {
   initCommTabs();
   renderChat();
   setupMessageInput();
- codex/create-webpage-based-on-provided-images-k8qlu6
   handleAddEvent();
-
- main
 }
 
 document.addEventListener('DOMContentLoaded', init);
