@@ -232,9 +232,14 @@ function renderCalendar() {
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
       <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
         const color = eventColors[ev.subject] || eventColors.Mates;
+ codex/create-webpage-based-on-provided-images-k8qlu6
         const label = ev.subject ? 'labelled' : '';
         const text = ev.subject || '';
         return `<span class="event-pill ${label}" style="background:${color}; color:#fff">${text}</span>`;
+
+        const label = ev.time ? 'labelled' : '';
+        return `<span class="event-pill ${label}" style="background:${color}; color:${ev.time ? '#fff' : 'transparent'}">${ev.time ? ev.subject : ''}</span>`;
+ main
       }).join('')}</div>
     `;
     if (isCurrentMonth) {
@@ -277,6 +282,7 @@ function formatDate(iso) {
   return date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
 }
 
+¡ codex/create-webpage-based-on-provided-images-k8qlu6
 function toggleEventForm(show) {
   const overlay = document.getElementById('eventFormOverlay');
   const dateLabel = document.getElementById('eventFormDate');
@@ -326,6 +332,8 @@ function handleAddEvent() {
   });
 }
 
+
+ main
 function renderMaterials() {
   const container = document.getElementById('materialsList');
   container.innerHTML = materials.map(item => `
@@ -528,7 +536,10 @@ function init() {
   initCommTabs();
   renderChat();
   setupMessageInput();
+ codex/create-webpage-based-on-provided-images-k8qlu6
   handleAddEvent();
+
+ main
 }
 
 document.addEventListener('DOMContentLoaded', init);
