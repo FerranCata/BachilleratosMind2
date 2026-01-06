@@ -47,6 +47,14 @@ body {
   color: #ffffff;
 }
 
+.brand-image {
+  width: 190px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
+}
+
 .brand-logo {
   width: 48px;
   height: 48px;
@@ -292,6 +300,10 @@ body {
   position: relative;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
 
 .calendar-day.inactive {
@@ -302,28 +314,53 @@ body {
 .calendar-day .day-number {
   font-weight: 700;
   color: #3f4c6b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .calendar-day .day-events {
   margin-top: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  gap: 6px;
+  width: 100%;
 }
 
 .event-pill {
-  height: 4px;
-  width: 18px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--event-color) 82%, #ffffff);
+  color: #0f172a;
+  border: 1px solid var(--event-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .event-pill.labelled {
-  height: auto;
-  padding: 2px 4px;
-  border-radius: 6px;
-  font-size: 12px;
+  width: 100%;
+}
+
+.event-pill::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--event-color);
+  flex-shrink: 0;
+}
+
+.event-pill .event-time {
+  margin-left: auto;
   font-weight: 600;
-  display: inline-block;
+  color: #0f172a;
+  opacity: 0.8;
 }
 
 .calendar-day.selected {
@@ -365,6 +402,13 @@ body {
   color: var(--muted);
 }
 
+.event-card .icon-btn {
+  background: #eef3ff;
+  color: var(--primary);
+  border-color: #cdd8ff;
+  box-shadow: none;
+}
+
 .fab {
   width: 56px;
   height: 56px;
@@ -380,6 +424,11 @@ body {
   right: 16px;
   cursor: pointer;
   box-shadow: var(--shadow);
+}
+
+.fab i {
+  color: #ffffff;
+  font-size: 22px;
 }
 
 .materials-actions .fab {
