@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bachillerato's Mind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SzlrxWriC3z8tLWSr6TqA0WcFP1SzLkY9vFfF1RT1JqD5W5B7EV5b5Hf0h6Vx0p5d3r1qX+4YkP52ZS4nIMZQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-small">BACHILLERATO'S</span>
+          <span class="brand-large">MIND</span>
+        </div>
+      </div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-section="inicio"><i class="fa-regular fa-circle-xmark"></i><span>Inicio</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="calendario"><i class="fa-regular fa-circle-xmark"></i><span>Calendario</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="materiales"><i class="fa-regular fa-circle-xmark"></i><span>Materiales</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="clases"><i class="fa-regular fa-circle-xmark"></i><span>Clases de Refuerzo</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="tienda"><i class="fa-regular fa-circle-xmark"></i><span>Tienda</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="comunicacion"><i class="fa-regular fa-circle-xmark"></i><span>Comunicación</span><i class="fa-solid fa-chevron-right"></i></button>
+      </nav>
+      <div class="logout-wrap">
+        <button class="logout-btn">Log Out <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div></div>
+        <div class="actions">
+          <button class="icon-btn" title="Ajustes"><i class="fa-solid fa-gear"></i></button>
+          <div class="avatar">M</div>
+          <div class="avatar user-photo"></div>
+        </div>
+      </header>
+
+      <section class="section" id="inicio" aria-label="Inicio">
+        <div class="home-layout">
+          <div class="card-panel news-panel">
+            <h2 class="section-title">Noticias</h2>
+            <div class="news-list" id="newsList"></div>
+          </div>
+          <div class="card-panel notifications-panel">
+            <h2 class="section-title">Notificaciones</h2>
+            <div class="notifications" id="notificationList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="calendario" aria-label="Calendario">
+        <div class="card-panel calendar-panel">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+            <h2 class="section-title mb-0">Calendario</h2>
+            <div class="d-flex gap-2">
+              <div class="select-chip">
+                <select id="viewSelect" class="form-select form-select-sm">
+                  <option value="mes">MES</option>
+                  <option value="semana">SEMANA</option>
+                  <option value="lista">LISTA</option>
+                </select>
+              </div>
+              <div class="select-chip">
+                <select id="monthSelect" class="form-select form-select-sm"></select>
+              </div>
+              <div class="select-chip">
+                <select id="yearSelect" class="form-select form-select-sm"></select>
+              </div>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="calendar-events" id="calendarEvents"></div>
+          <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i></button>
+
+          <div class="event-form-overlay d-none" id="eventFormOverlay">
+            <div class="event-form-card">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <p class="text-muted small mb-1">Nueva actividad en</p>
+                  <h5 class="mb-0" id="eventFormDate"></h5>
+                </div>
+                <button class="icon-btn" id="closeEventForm" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+              <form id="eventForm">
+                <div class="mb-2">
+                  <label class="form-label small fw-semibold">Asignatura / Título</label>
+                  <input type="text" class="form-control" id="eventSubject" placeholder="Ej: Castellano" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Horario</label>
+                  <input type="text" class="form-control" id="eventTime" placeholder="17:00 - 18:00">
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" id="cancelEvent">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Añadir</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="materiales" aria-label="Materiales">
+        <div class="card-panel materials-panel">
+          <div class="breadcrumb">Materiales &gt; Materiales del Centro &gt; 2º BACH &gt; Castellano &gt; Sintaxis</div>
+          <div class="materials-list" id="materialsList"></div>
+          <div class="materials-actions">
+            <button class="btn btn-outline-primary rounded-pill px-4">ATRÁS</button>
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-primary rounded-pill px-4">Subir</button>
+              <button class="fab"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="clases" aria-label="Clases de refuerzo">
+        <div class="card-panel">
+          <h2 class="section-title">Próximas Clases</h2>
+          <div class="class-carousel" id="upcomingClasses"></div>
+          <hr class="divider">
+          <div class="recorded-classes">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+              <h3 class="section-title mb-0">Clases grabadas</h3>
+              <div class="cta-box">
+                <p class="mb-2 fw-semibold text-primary">¿No encuentras tu clase?</p>
+                <button class="btn btn-primary w-100">SOLICITA UNA TUTORÍA</button>
+              </div>
+            </div>
+            <div id="recordedClasses"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="tienda" aria-label="Tienda">
+        <div class="card-panel">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div class="category-pills" id="categoryPills"></div>
+            <button class="icon-btn cart-btn" title="Carrito"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+          <div id="tiendaGrid" class="store-grid"></div>
+          <div id="productDetail" class="product-detail d-none"></div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="comunicacion" aria-label="Comunicación">
+        <div class="comm-wrapper">
+          <div class="comm-sidebar">
+            <div class="toggle-tabs">
+              <button class="toggle-btn active" data-role="profesores">Profesores</button>
+              <button class="toggle-btn" data-role="alumnos">Alumnos</button>
+            </div>
+            <div class="conversation-list" id="conversationList"></div>
+          </div>
+          <div class="comm-chat">
+            <div class="chat-header">
+              <div class="d-flex align-items-center gap-2">
+                <button class="icon-btn back-btn d-none" id="backToList"><i class="fa-solid fa-arrow-left"></i></button>
+                <h3 class="section-title mb-0" id="chatTitle">Selecciona una conversación</h3>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <button class="icon-btn"><i class="fa-solid fa-paperclip"></i></button>
+                <button class="icon-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              </div>
+            </div>
+            <div class="chat-body" id="chatBody"></div>
+            <div class="chat-input">
+              <div class="d-flex align-items-center gap-2 w-100">
+                <button class="icon-btn"><i class="fa-solid fa-plus"></i></button>
+                <button class="icon-btn"><i class="fa-regular fa-face-smile"></i></button>
+                <input type="text" id="messageInput" class="form-control" placeholder="Escribe un mensaje">
+                <button class="icon-btn" id="sendMessage"><i class="fa-solid fa-magnifying-glass"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
