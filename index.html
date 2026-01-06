@@ -107,15 +107,19 @@
 
       <section class="section d-none" id="materiales" aria-label="Materiales">
         <div class="card-panel materials-panel">
-          <div class="breadcrumb">Materiales &gt; Materiales del Centro &gt; 2º BACH &gt; Castellano &gt; Sintaxis</div>
-          <div class="materials-list" id="materialsList"></div>
-          <div class="materials-actions">
-            <button class="btn btn-outline-primary rounded-pill px-4">ATRÁS</button>
-            <div class="d-flex align-items-center gap-3">
-              <button class="btn btn-primary rounded-pill px-4">Subir</button>
-              <button class="fab"><i class="fa-solid fa-plus"></i></button>
+          <div class="materials-header">
+            <div class="breadcrumb" id="materialsPath"></div>
+            <div class="material-actions">
+              <div class="fab-wrapper">
+                <button class="fab" id="materialsFab" aria-expanded="false"><i class="fa-solid fa-plus"></i></button>
+                <div class="fab-menu d-none" id="materialsMenu">
+                  <button class="fab-menu-item" data-action="upload"><i class="fa-solid fa-upload"></i> Subir archivo</button>
+                  <button class="fab-menu-item" data-action="new-folder"><i class="fa-solid fa-folder-plus"></i> Crear carpeta</button>
+                </div>
+              </div>
             </div>
           </div>
+          <div class="materials-list" id="materialsList"></div>
         </div>
       </section>
 
@@ -139,12 +143,40 @@
 
       <section class="section d-none" id="tienda" aria-label="Tienda">
         <div class="card-panel">
-          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <div class="category-pills" id="categoryPills"></div>
-            <button class="icon-btn cart-btn" title="Carrito"><i class="fa-solid fa-cart-shopping"></i></button>
+          <div class="store-tabs">
+            <button class="store-tab-btn active" data-tab="catalog">Catálogo</button>
+            <button class="store-tab-btn" data-tab="cart">Carrito</button>
+            <button class="store-tab-btn" data-tab="payment">Pasarela de pago</button>
           </div>
-          <div id="tiendaGrid" class="store-grid"></div>
-          <div id="productDetail" class="product-detail d-none"></div>
+
+          <div class="store-tab" id="catalogTab">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+              <div class="category-pills" id="categoryPills"></div>
+              <div class="d-flex gap-2 align-items-center">
+                <button class="icon-btn cart-btn" id="openCartFromCatalog" title="Carrito"><i class="fa-solid fa-cart-shopping"></i></button>
+              </div>
+            </div>
+            <div id="tiendaGrid" class="store-grid"></div>
+            <div id="productDetail" class="product-detail d-none"></div>
+          </div>
+
+          <div class="store-tab d-none" id="cartTab">
+            <div class="cart-panel">
+              <div class="cart-header">
+                <div>
+                  <p class="text-muted small mb-0">Tus artículos</p>
+                  <h3 class="section-title mb-0">Carrito de la compra</h3>
+                </div>
+                <span class="cart-chip" id="cartCountChip">0 artículos</span>
+              </div>
+              <div id="cartItems"></div>
+              <div class="cart-footer" id="cartFooter"></div>
+            </div>
+          </div>
+
+          <div class="store-tab d-none" id="paymentTab">
+            <div id="checkoutPanel"></div>
+          </div>
         </div>
       </section>
 

@@ -7,7 +7,18 @@ const state = {
   selectedDate: '2026-09-03',
   editingEventIndex: null,
   storeCategory: 'papeleria',
+  storeTab: 'catalog',
   selectedProduct: null,
+  cart: [
+    { productId: 'cuota-2526', quantity: 1 },
+    { productId: 'boligrafo-azul', quantity: 3 },
+    { productId: 'libreta-espiral', quantity: 5 },
+    { productId: 'calculadora', quantity: 1 },
+    { productId: 'regla-verde', quantity: 1 },
+  ],
+  checkoutStep: 1,
+  paymentMethod: 'tarjeta',
+  materialsPath: ['Materiales', 'Materiales del Centro', '2º BACH', 'Castellano', 'Sintaxis'],
   conversations: {},
 };
 
@@ -68,19 +79,12 @@ const calendarEvents = {
 };
 
 const materials = [
-  { title: 'Enunciados', level: 0, checked: false, bold: true },
-  { title: 'Más Exámenes Sintaxis', level: 0, checked: false, bold: true },
-  { title: 'Anexos', level: 0, checked: false, bold: true },
-  { title: 'Examen Sintaxis 1', level: 1, checked: true },
-  { title: 'Examen Sintaxis 2', level: 1, checked: true },
-  { title: 'Examen Sintaxis 3', level: 1, checked: true },
-  { title: 'Examen Sintaxis 4', level: 1, checked: true },
-  { title: 'Examen Sintaxis 1 (Resuelto)', level: 1, checked: true },
-  { title: 'Examen Sintaxis 2 (Resuelto)', level: 1, checked: true },
-  { title: 'Examen Sintaxis 3 (Resuelto)', level: 1, checked: true },
-  { title: 'Examen Sintaxis 4 (Resuelto)', level: 1, checked: true },
-  { title: 'Bibliografía', level: 0, checked: true },
-  { title: 'Nueva Carp', level: 0, checked: false, bold: true },
+  { title: 'Exámenes resueltos de sintaxis', type: 'folder', detail: '5 archivos', meta: 'Actualizado hoy' },
+  { title: 'Guía rápida - Sintaxis.pdf', type: 'file', detail: '1,2 MB · PDF', meta: 'Modificado hace 2 días' },
+  { title: 'Esquemas oracionales', type: 'folder', detail: '3 subcarpetas', meta: 'Actualizado el lunes' },
+  { title: 'Actividades autocorregibles.xlsx', type: 'file', detail: 'Hoja de cálculo', meta: 'Añadido esta semana' },
+  { title: 'Lecturas recomendadas 2º BACH', type: 'folder', detail: 'Material de lectura', meta: 'Actualizado el mes pasado' },
+  { title: 'Banco de frases - Práctica', type: 'file', detail: 'Documento · 0,8 MB', meta: 'Revisado ayer' },
 ];
 
 const upcomingClasses = [
@@ -92,23 +96,37 @@ const upcomingClasses = [
 const recordedClasses = ['Matemáticas', 'Química', 'Física'];
 
 const storeCategories = [
+  { id: 'todo', label: 'Todo' },
   { id: 'libros', label: 'Libros' },
   { id: 'papeleria', label: 'Papelería' },
   { id: 'tecnologia', label: 'Tecnología' },
   { id: 'preparacion', label: 'Preparación Exámenes' },
+  { id: 'servicios', label: 'Servicios' },
 ];
 
 const products = [
-  { id: 'bolis', name: 'Pack Bolígrafos', price: '4,50$', category: 'papeleria', description: 'Pack de bolígrafos de color azul, negro, rojo y verde.', gallery: 3 },
-  { id: 'tipex', name: 'Tipex', price: '2,00$', category: 'papeleria', description: 'Cinta correctora.', gallery: 2 },
-  { id: 'hojas', name: 'Pack Hojas A4', price: '5,00$', category: 'papeleria', description: 'Paquete de hojas tamaño A4.', gallery: 2 },
-  { id: 'lapices', name: 'Pack Lápices', price: '3,00$', category: 'papeleria', description: 'Pack de lápices estándar.', gallery: 2 },
-  { id: 'compas', name: 'Compás', price: '7,00$', category: 'papeleria', description: 'Compás de precisión.', gallery: 2 },
-  { id: 'boligrafo-negro', name: 'Bolígrafo Negro', price: '1,00$', category: 'papeleria', description: 'Bolígrafo tinta negra.', gallery: 2 },
-  { id: 'boligrafo-azul', name: 'Bolígrafo Azul', price: '1,00$', category: 'papeleria', description: 'Bolígrafo tinta azul.', gallery: 2 },
-  { id: 'subrayadores', name: 'Pack Subrayadores', price: '5,00$', category: 'papeleria', description: 'Subrayadores de colores pastel.', gallery: 2 },
-  { id: 'rotuladores', name: 'Pack Rotuladores', price: '5,00$', category: 'papeleria', description: 'Rotuladores de punta fina.', gallery: 2 },
+  { id: 'cuota-2526', name: 'Cuota anual matrícula 25/26', price: 1000, category: 'servicios', description: 'Pago de matrícula anual para el curso 25/26.', gallery: 1 },
+  { id: 'boligrafo-azul', name: 'Bolígrafo azul', price: 1, category: 'papeleria', description: 'Bolígrafo tinta azul de trazo fino.', gallery: 2 },
+  { id: 'libreta-espiral', name: 'Libreta de espiral tamaño mediano', price: 4, category: 'papeleria', description: 'Libreta cuadriculada con tapa dura y 100 hojas.', gallery: 2 },
+  { id: 'calculadora', name: 'Calculadora científica escolar', price: 30, category: 'tecnologia', description: 'Calculadora con funciones trigonométricas y estadísticas.', gallery: 2 },
+  { id: 'regla-verde', name: 'Regla escolar transparente verde', price: 5, category: 'papeleria', description: 'Regla de 30 cm con marcaje antideslizante.', gallery: 1 },
+  { id: 'manual-sintaxis', name: 'Manual de sintaxis 2º BACH', price: 24.5, category: 'libros', description: 'Manual con teoría, ejemplos y ejercicios resueltos de sintaxis.', gallery: 3 },
+  { id: 'pack-ebau', name: 'Pack simulacros EBAU Lengua', price: 18, category: 'preparacion', description: 'Colección de simulacros de examen con soluciones comentadas.', gallery: 2 },
+  { id: 'kit-highlighters', name: 'Pack subrayadores pastel', price: 6, category: 'papeleria', description: 'Subrayadores de larga duración en colores pastel.', gallery: 2 },
+  { id: 'tablet-academica', name: 'Tablet académica 10"', price: 210, category: 'tecnologia', description: 'Tablet con lápiz digital para apuntes y clases online.', gallery: 3 },
+  { id: 'mochila', name: 'Mochila ergonómica Bachillerato', price: 39, category: 'papeleria', description: 'Mochila con compartimento para portátil y cuadernos.', gallery: 2 },
+  { id: 'lecturas-castellano', name: 'Pack lecturas Castellano', price: 27, category: 'libros', description: 'Selección de lecturas recomendadas para 2º BACH.', gallery: 2 },
+  { id: 'auriculares', name: 'Auriculares con micrófono', price: 25, category: 'tecnologia', description: 'Auriculares cómodos para videoclases y estudio.', gallery: 2 },
+  { id: 'flashcards-historia', name: 'Flashcards Historia de España', price: 12, category: 'preparacion', description: 'Tarjetas de repaso con hitos clave y preguntas rápidas.', gallery: 1 },
+  { id: 'cuaderno-musica', name: 'Cuaderno pauta doble', price: 3.5, category: 'papeleria', description: 'Cuaderno pautado para clase de música.', gallery: 1 },
+  { id: 'organizador-escritorio', name: 'Organizador de escritorio', price: 9, category: 'papeleria', description: 'Bandeja para rotuladores, libretas y notas adhesivas.', gallery: 1 },
+  { id: 'router-estudio', name: 'Router WiFi estudio', price: 48, category: 'tecnologia', description: 'Router con priorización de tráfico para clases online.', gallery: 1 },
+  { id: 'pack-apuntes', name: 'Apuntes resumidos de Química', price: 15, category: 'preparacion', description: 'Apuntes estructurados por temas con ejercicios tipo examen.', gallery: 2 },
 ];
+
+const formatCurrency = (value) => `${value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+const getCategoryLabel = (id) => storeCategories.find(cat => cat.id === id)?.label || 'Otros';
+const findProduct = (productId) => products.find(p => p.id === productId);
 
 const conversations = {
   profesores: [
@@ -363,16 +381,51 @@ function handleAddEvent() {
 
 function renderMaterials() {
   const container = document.getElementById('materialsList');
-  if (!container) return;
+  const breadcrumb = document.getElementById('materialsPath');
+  if (!container || !breadcrumb) return;
+  breadcrumb.textContent = state.materialsPath.join(' > ');
   container.innerHTML = materials.map(item => `
-    <div class="material-item" style="margin-left:${item.level * 16}px">
-      <div class="label ${item.bold ? 'fw-bold' : ''}">
-        <span class="bullet"></span>
-        ${item.title}
+    <div class="material-row">
+      <div class="material-icon">${item.type === 'folder' ? '<i class="fa-solid fa-folder"></i>' : '<i class="fa-solid fa-file-lines"></i>'}</div>
+      <div class="material-label">
+        <div class="title">${item.title}</div>
+        <div class="subtitle">${item.detail}</div>
       </div>
-      <input type="checkbox" ${item.checked ? 'checked' : ''}>
+      <div class="material-meta">${item.meta}</div>
     </div>
   `).join('');
+}
+
+function setupMaterialsFab() {
+  const fab = document.getElementById('materialsFab');
+  const menu = document.getElementById('materialsMenu');
+  if (!fab || !menu) return;
+
+  const closeMenu = () => {
+    menu.classList.add('d-none');
+    fab.setAttribute('aria-expanded', 'false');
+  };
+
+  fab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('d-none');
+    const expanded = !menu.classList.contains('d-none');
+    fab.setAttribute('aria-expanded', String(expanded));
+  });
+
+  menu.querySelectorAll('.fab-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const isInside = menu.contains(e.target) || fab.contains(e.target);
+    if (!isInside) {
+      closeMenu();
+    }
+  });
 }
 
 function renderClasses() {
@@ -407,14 +460,21 @@ function renderStore() {
     <button class="category-btn ${state.storeCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}">${cat.label}</button>
   `).join('');
 
-  const filtered = products.filter(p => state.storeCategory === 'all' || p.category === state.storeCategory);
+  const filtered = products.filter(p => state.storeCategory === 'todo' || p.category === state.storeCategory);
   const grid = document.getElementById('tiendaGrid');
   if (!grid) return;
   grid.innerHTML = filtered.map(p => `
     <div class="product-card" data-id="${p.id}">
-      <div class="product-thumb"><i class="fa-regular fa-image"></i></div>
+      <div class="product-thumb">
+        <span class="product-category">${getCategoryLabel(p.category)}</span>
+        <i class="fa-regular fa-image"></i>
+      </div>
       <div class="fw-semibold">${p.name}</div>
-      <div class="text-muted">${p.price}</div>
+      <div class="text-muted">${formatCurrency(p.price)}</div>
+      <div class="product-actions">
+        <button class="btn btn-primary btn-sm add-to-cart" data-id="${p.id}">Añadir</button>
+        <button class="btn btn-outline-secondary btn-sm view-detail" data-id="${p.id}">Ver</button>
+      </div>
     </div>
   `).join('');
 
@@ -422,6 +482,22 @@ function renderStore() {
     btn.addEventListener('click', () => {
       state.storeCategory = btn.dataset.cat;
       renderStore();
+    });
+  });
+
+  grid.querySelectorAll('.view-detail').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const product = products.find(p => p.id === btn.dataset.id);
+      state.selectedProduct = product;
+      renderProductDetail();
+    });
+  });
+
+  grid.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addToCart(btn.dataset.id, 1);
     });
   });
 
@@ -450,11 +526,15 @@ function renderProductDetail() {
     <div class="product-info">
       <button class="icon-btn mb-3" id="closeDetail"><i class="fa-solid fa-arrow-left"></i></button>
       <h2>${product.name}</h2>
-      <p class="text-muted">precio: ${product.price}</p>
+      <p class="text-muted">Precio: ${formatCurrency(product.price)}</p>
       <p><strong>Descripción:</strong> ${product.description}</p>
-      <div class="d-flex gap-2 align-items-center mb-3">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button">1 unidad</button>
-        <button class="btn btn-primary">Añadir al Carrito</button>
+      <div class="d-flex flex-column gap-2 mb-3">
+        <label class="fw-semibold text-primary">Cantidad</label>
+        <input type="number" class="form-control w-auto" id="detailQty" value="1" min="1" aria-label="Cantidad a añadir">
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" id="addFromDetail" data-id="${product.id}">Añadir al Carrito</button>
+          <button class="btn btn-outline-secondary" id="viewCartFromDetail">Ver carrito</button>
+        </div>
       </div>
     </div>
   `;
@@ -463,6 +543,316 @@ function renderProductDetail() {
     state.selectedProduct = null;
     renderProductDetail();
   });
+  document.getElementById('addFromDetail').addEventListener('click', (e) => {
+    const qtyInput = document.getElementById('detailQty');
+    const qty = Math.max(1, Number(qtyInput.value) || 1);
+    addToCart(e.target.dataset.id, qty);
+  });
+  document.getElementById('viewCartFromDetail').addEventListener('click', () => {
+    setStoreTab('cart');
+  });
+}
+
+function calculateCartTotal() {
+  return state.cart.reduce((sum, item) => {
+    const product = findProduct(item.productId);
+    if (!product) return sum;
+    return sum + product.price * item.quantity;
+  }, 0);
+}
+
+function addToCart(productId, quantity = 1) {
+  const product = findProduct(productId);
+  if (!product) return;
+  const existing = state.cart.find(item => item.productId === productId);
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    state.cart.push({ productId, quantity });
+  }
+  renderCart();
+  renderCheckout();
+  setStoreTab('cart');
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  const countChip = document.getElementById('cartCountChip');
+  const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+  if (countChip) countChip.textContent = `${totalItems} artículos`;
+  if (!container || !footer) return;
+  if (state.cart.length === 0) {
+    container.innerHTML = `
+      <div class="p-4 text-center text-muted">
+        Todavía no has añadido productos. Explora la tienda y agrégalos al carrito.
+      </div>
+    `;
+    footer.innerHTML = `
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary" id="backToCatalog">Volver al catálogo</button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = state.cart.map(item => {
+      const product = findProduct(item.productId);
+      if (!product) return '';
+      return `
+        <div class="cart-item" data-id="${item.productId}">
+          <div>
+            <div class="title">${product.name}</div>
+            <div class="cart-meta">${getCategoryLabel(product.category)} · ${formatCurrency(product.price)}</div>
+          </div>
+          <div class="d-flex align-items-center gap-3 flex-wrap justify-content-end">
+            <div class="qty-control" data-id="${item.productId}">
+              <button class="decrease" data-id="${item.productId}" aria-label="Disminuir cantidad">-</button>
+              <span>${item.quantity} ud.</span>
+              <button class="increase" data-id="${item.productId}" aria-label="Aumentar cantidad">+</button>
+            </div>
+            <div class="fw-bold">${formatCurrency(product.price * item.quantity)}</div>
+            <button class="icon-btn remove-item" data-id="${item.productId}" title="Eliminar del carrito"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const total = calculateCartTotal();
+    footer.innerHTML = `
+      <div>
+        <div class="text-muted">Importe estimado</div>
+        <div class="total-amount">${formatCurrency(total)}</div>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary" id="continueShopping">Seguir comprando</button>
+        <button class="btn btn-primary" id="goToPayment">Ir a pago</button>
+      </div>
+    `;
+  }
+
+  container.querySelectorAll('.increase').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = state.cart.find(i => i.productId === btn.dataset.id);
+      if (!item) return;
+      item.quantity += 1;
+      renderCart();
+      renderCheckout();
+    });
+  });
+
+  container.querySelectorAll('.decrease').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = state.cart.find(i => i.productId === btn.dataset.id);
+      if (!item) return;
+      item.quantity = Math.max(1, item.quantity - 1);
+      renderCart();
+      renderCheckout();
+    });
+  });
+
+  container.querySelectorAll('.remove-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.cart = state.cart.filter(i => i.productId !== btn.dataset.id);
+      renderCart();
+      renderCheckout();
+    });
+  });
+
+  const backBtn = document.getElementById('backToCatalog');
+  if (backBtn) backBtn.addEventListener('click', () => setStoreTab('catalog'));
+
+  const continueBtn = document.getElementById('continueShopping');
+  if (continueBtn) continueBtn.addEventListener('click', () => setStoreTab('catalog'));
+
+  const goPaymentBtn = document.getElementById('goToPayment');
+  if (goPaymentBtn) goPaymentBtn.addEventListener('click', () => {
+    state.checkoutStep = 1;
+    setStoreTab('payment');
+  });
+}
+
+function renderCheckout() {
+  const panel = document.getElementById('checkoutPanel');
+  if (!panel) return;
+  if (state.cart.length === 0) {
+    panel.innerHTML = `
+      <div class="checkout-panel">
+        <p class="text-muted mb-2">No hay productos en el carrito.</p>
+        <button class="btn btn-primary" id="checkoutBackToCatalog">Volver a la tienda</button>
+      </div>
+    `;
+    const backBtn = document.getElementById('checkoutBackToCatalog');
+    if (backBtn) backBtn.addEventListener('click', () => setStoreTab('catalog'));
+    return;
+  }
+
+  const total = calculateCartTotal();
+  const steps = [
+    { id: 1, label: '1.CONFIRMACIÓN SELECCIÓN' },
+    { id: 2, label: '2.SELECCIÓN MÉTODO DE PAGO' },
+    { id: 3, label: '3.VALIDACIÓN TRANSACCIÓN' },
+  ];
+
+  const stepper = `
+    <div class="payment-steps">
+      ${steps.map(step => `
+        <div class="step-pill ${state.checkoutStep === step.id ? 'active' : state.checkoutStep > step.id ? 'completed' : ''}">
+          ${step.label}
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  let content = '';
+
+  if (state.checkoutStep === 1) {
+    content = `
+      <div class="checkout-grid">
+        <div class="order-box">
+          <h4 class="section-title mb-3">Resumen de tu pedido</h4>
+          ${state.cart.map(item => {
+            const product = findProduct(item.productId);
+            if (!product) return '';
+            return `
+              <div class="order-line">
+                <div class="name">${product.name}</div>
+                <div class="fw-semibold text-center">x${item.quantity}</div>
+                <div class="fw-semibold text-end">${formatCurrency(product.price * item.quantity)}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        <div class="summary-box">
+          <div class="text-uppercase">Importe a pagar</div>
+          <div class="summary-amount">${formatCurrency(total)}</div>
+          <div class="small fw-semibold">Se aceptan pagos en:</div>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge text-bg-light text-primary">PayPal</span>
+            <span class="badge text-bg-light text-primary">Mastercard</span>
+            <span class="badge text-bg-light text-primary">VISA</span>
+            <span class="badge text-bg-light text-primary">G Pay</span>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-actions">
+        <button class="btn btn-outline-primary" data-action="back-cart">Atrás</button>
+        <button class="btn btn-primary" data-action="next-step">Siguiente</button>
+      </div>
+    `;
+  } else if (state.checkoutStep === 2) {
+    content = `
+      <div class="checkout-grid">
+        <div class="order-box">
+          <h4 class="section-title mb-3">Datos de pago</h4>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Nombre del titular</label>
+            <input type="text" class="form-control" value="PABLO RODRÍGUEZ MARÍN">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Número de tarjeta de crédito/débito</label>
+            <input type="text" class="form-control" value="5321 6583 8753 0293">
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label fw-semibold">Número CVV</label>
+              <input type="text" class="form-control" value="999">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-semibold">Fecha de expiración</label>
+              <input type="text" class="form-control" value="07/32">
+            </div>
+          </div>
+        </div>
+        <div class="order-box">
+          <h4 class="section-title mb-3">Selección método de pago</h4>
+          <div class="payment-methods">
+            <button class="method-btn ${state.paymentMethod === 'gpay' ? 'active' : ''}" data-method="gpay">G Pay</button>
+            <button class="method-btn ${state.paymentMethod === 'tarjeta' ? 'active' : ''}" data-method="tarjeta">Tarjeta (Mastercard / VISA)</button>
+            <button class="method-btn ${state.paymentMethod === 'paypal' ? 'active' : ''}" data-method="paypal">PayPal</button>
+          </div>
+          <div class="mt-3 fw-bold">Importe a pagar: ${formatCurrency(total)}</div>
+        </div>
+      </div>
+      <div class="checkout-actions">
+        <button class="btn btn-outline-primary" data-action="prev-step">Atrás</button>
+        <button class="btn btn-primary" data-action="complete-payment">Pagar</button>
+      </div>
+    `;
+  } else {
+    content = `
+      <div class="payment-success">
+        <div class="icon"><i class="fa-solid fa-check"></i></div>
+        <h3 class="text-center text-success">EL PAGO HA SIDO REALIZADO CORRECTAMENTE</h3>
+        <button class="btn btn-primary" data-action="finish">Finalizar</button>
+      </div>
+    `;
+  }
+
+  panel.innerHTML = `<div class="checkout-panel">${stepper}${content}</div>`;
+
+  panel.querySelectorAll('[data-action="next-step"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.checkoutStep = 2;
+      renderCheckout();
+    });
+  });
+
+  panel.querySelectorAll('[data-action="prev-step"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.checkoutStep = 1;
+      renderCheckout();
+    });
+  });
+
+  panel.querySelectorAll('[data-action="back-cart"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setStoreTab('cart');
+      state.checkoutStep = 1;
+      renderCheckout();
+    });
+  });
+
+  panel.querySelectorAll('[data-action="complete-payment"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.checkoutStep = 3;
+      renderCheckout();
+    });
+  });
+
+  panel.querySelectorAll('[data-action="finish"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setStoreTab('catalog');
+      state.checkoutStep = 1;
+    });
+  });
+
+  panel.querySelectorAll('.method-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.paymentMethod = btn.dataset.method;
+      renderCheckout();
+    });
+  });
+}
+
+function setStoreTab(tab) {
+  state.storeTab = tab;
+  document.querySelectorAll('.store-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  document.querySelectorAll('.store-tab').forEach(tabContent => {
+    const id = tabContent.id.replace('Tab', '');
+    tabContent.classList.toggle('d-none', id !== tab);
+  });
+
+  if (tab === 'cart') renderCart();
+  if (tab === 'payment') renderCheckout();
+}
+
+function setupStoreTabs() {
+  document.querySelectorAll('.store-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => setStoreTab(btn.dataset.tab));
+  });
+  const openCartBtn = document.getElementById('openCartFromCatalog');
+  if (openCartBtn) openCartBtn.addEventListener('click', () => setStoreTab('cart'));
 }
 
 function renderConversations() {
@@ -564,9 +954,14 @@ function init() {
   fillSelectOptions();
   renderCalendar();
   renderMaterials();
+  setupMaterialsFab();
   renderClasses();
   renderStore();
   renderProductDetail();
+  renderCart();
+  renderCheckout();
+  setupStoreTabs();
+  setStoreTab(state.storeTab);
   state.conversations = { ...state.conversations, ...conversations };
   renderConversations();
   initCommTabs();
