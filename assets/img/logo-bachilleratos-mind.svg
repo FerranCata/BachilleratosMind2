@@ -1,0 +1,19 @@
+<svg width="372" height="118" viewBox="0 0 372 118" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hexGradient" x1="14" y1="8" x2="116" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63A9E6"/>
+      <stop offset="1" stop-color="#1E67B6"/>
+    </linearGradient>
+    <linearGradient id="capGradient" x1="30" y1="28" x2="92" y2="84" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#E8EEF6" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+  <polygon points="65,6 121,38 121,96 65,128 9,96 9,38" fill="url(#hexGradient)"/>
+  <polygon points="25,44 65,24 105,44 65,64" fill="url(#capGradient)"/>
+  <rect x="49" y="64" width="32" height="8" rx="4" fill="#0C2F5C" opacity="0.9"/>
+  <path d="M64 70C54.058 70 46 77.611 46 87C46 96.389 54.058 104 64 104C73.942 104 82 96.389 82 87C82 83.111 80.596 79.573 78.2 76.8L71 84V74H54V91H64L56.713 98.287C58.845 100.033 61.303 101 64 101C71.18 101 77 95.18 77 88C77 84.695 75.786 81.696 73.753 79.412L70 84V77H60V87H68L62.859 92.141C61.81 92.682 60.675 93 59.5 93C55.91 93 53 90.09 53 86.5V82H72V85.586L78.828 77.758C80.233 79.732 81 82.24 81 84.884C81 94.225 73.27 102 64 102C54.73 102 47 94.225 47 84.884C47 75.543 54.73 67.768 64 67.768C69.832 67.768 75.029 70.812 78.005 75.618L80.895 73.708C77.42 68.302 71.147 64.5 64 64.5C52.954 64.5 44 73.454 44 84.5C44 95.546 52.954 104.5 64 104.5C75.046 104.5 84 95.546 84 84.5C84 78.497 81.592 73.151 77.602 69.282L64 83.5V70Z" fill="#0C2F5C" opacity="0.92"/>
+  <path d="M91 91L103 103L91 107L95 95L87 91H91Z" fill="#0C2F5C" opacity="0.92"/>
+  <text x="140" y="52" fill="#FFFFFF" font-family="'Poppins', 'Segoe UI', sans-serif" font-size="18" font-weight="700">BACHILLERATO'S</text>
+  <text x="140" y="96" fill="#177AC5" font-family="'Poppins', 'Segoe UI', sans-serif" font-size="46" font-weight="800" letter-spacing="1">MIND</text>
+</svg>
