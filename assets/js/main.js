@@ -541,6 +541,38 @@ function setupMaterialsFab() {
   });
 }
 
+function setupMaterialsFab() {
+  const fab = document.getElementById('materialsFab');
+  const menu = document.getElementById('materialsMenu');
+  if (!fab || !menu) return;
+
+  const closeMenu = () => {
+    menu.classList.add('d-none');
+    fab.setAttribute('aria-expanded', 'false');
+  };
+
+  fab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('d-none');
+    const expanded = !menu.classList.contains('d-none');
+    fab.setAttribute('aria-expanded', String(expanded));
+  });
+
+  menu.querySelectorAll('.fab-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const isInside = menu.contains(e.target) || fab.contains(e.target);
+    if (!isInside) {
+      closeMenu();
+    }
+  });
+}
+
 function renderClasses() {
   const carousel = document.getElementById('upcomingClasses');
   if (!carousel) return;
