@@ -267,6 +267,13 @@ body {
   font-size: 14px;
 }
 
+.news-detail {
+  margin: 8px 0;
+  color: #4b5770;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .notification-item {
   background: var(--card);
   padding: 14px;
