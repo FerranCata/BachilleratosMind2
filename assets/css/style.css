@@ -1462,3 +1462,87 @@ body {
     display: block;
   }
 }
+
+@media (max-width: 768px) {
+  .main {
+    padding: 14px 16px;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .sidebar {
+    padding: 16px;
+  }
+  .nav-item {
+    width: 100%;
+  }
+  .brand-image {
+    width: 150px;
+  }
+  .store-tabs {
+    grid-template-columns: 1fr;
+  }
+  .recorded-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .cta-box {
+    width: 100%;
+    min-width: 0;
+  }
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .calendar-row {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+  .calendar-row .event-detail {
+    align-items: flex-start;
+  }
+  .comm-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .comm-sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .main {
+    padding: 12px;
+  }
+  .icon-btn {
+    width: auto;
+    height: auto;
+    border-radius: 14px;
+  }
+  .icon-text {
+    font-size: 12px;
+  }
+  .nav-item {
+    grid-template-columns: 22px 1fr;
+  }
+  .nav-item i:last-child {
+    display: none;
+  }
+  .category-btn,
+  .store-tab-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .calendar-grid {
+    grid-template-columns: 1fr;
+  }
+  .fab {
+    width: 100%;
+    justify-content: center;
+  }
+  .chat-input .input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
