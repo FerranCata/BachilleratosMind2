@@ -65,9 +65,20 @@
               </div>
             </div>
           </div>
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>L</span>
+            <span>M</span>
+            <span>MX</span>
+            <span>J</span>
+            <span>V</span>
+            <span>S</span>
+            <span>D</span>
+          </div>
           <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="calendar-actions">
+            <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i><span class="icon-text">Añadir</span></button>
+          </div>
           <div class="calendar-events" id="calendarEvents"></div>
-          <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i><span class="icon-text">Añadir</span></button>
 
           <div class="event-form-overlay d-none" id="eventFormOverlay">
             <div class="event-form-card">
@@ -89,7 +100,17 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label small fw-semibold" for="eventColor">Color del evento</label>
-                  <input type="color" class="form-control form-control-color" id="eventColor" value="#2e6edb" title="Elige un color">
+                  <div class="event-color-options">
+                    <button type="button" class="color-swatch" data-color="#2e6edb" aria-label="Azul"></button>
+                    <button type="button" class="color-swatch" data-color="#e52e2e" aria-label="Rojo"></button>
+                    <button type="button" class="color-swatch" data-color="#f3bc1b" aria-label="Amarillo"></button>
+                    <button type="button" class="color-swatch" data-color="#20b07f" aria-label="Verde"></button>
+                    <button type="button" class="color-swatch" data-color="#8b5cf6" aria-label="Morado"></button>
+                    <label class="color-picker-label" for="eventColor">
+                      Personalizado
+                      <input type="color" class="form-control form-control-color" id="eventColor" value="#2e6edb" title="Elige un color">
+                    </label>
+                  </div>
                 </div>
                 <div class="d-flex justify-content-end gap-2">
                   <button type="button" class="btn btn-outline-secondary" id="cancelEvent">Cancelar</button>
