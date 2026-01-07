@@ -625,7 +625,6 @@ function renderStore() {
           </div>
           <button class="btn btn-primary btn-sm add-to-cart" data-id="${p.id}">Añadir</button>
         </div>
-        <button class="btn btn-outline-secondary btn-sm view-detail" data-id="${p.id}">Ver</button>
       </div>
     </div>
   `).join('');
@@ -634,15 +633,6 @@ function renderStore() {
     btn.addEventListener('click', () => {
       state.storeCategory = btn.dataset.cat;
       renderStore();
-    });
-  });
-
-  grid.querySelectorAll('.view-detail').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const product = products.find(p => p.id === btn.dataset.id);
-      state.selectedProduct = product;
-      renderProductDetail();
     });
   });
 
@@ -747,7 +737,21 @@ function addToCart(productId, quantity = 1) {
   }
   renderCart();
   renderCheckout();
-  setStoreTab('cart');
+  showCartNotice(product.name, quantity);
+}
+
+let cartNoticeTimeout;
+
+function showCartNotice(productName, quantity) {
+  const notice = document.getElementById('cartNotice');
+  if (!notice) return;
+  const suffix = quantity === 1 ? 'unidad' : 'unidades';
+  notice.innerHTML = `<i class="fa-solid fa-circle-check text-primary"></i> Añadido: ${productName} (${quantity} ${suffix}).`;
+  notice.classList.remove('d-none');
+  if (cartNoticeTimeout) window.clearTimeout(cartNoticeTimeout);
+  cartNoticeTimeout = window.setTimeout(() => {
+    notice.classList.add('d-none');
+  }, 2600);
 }
 
 function renderCart() {
