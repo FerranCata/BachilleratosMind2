@@ -78,14 +78,62 @@ const calendarEvents = {
   ],
 };
 
-const materials = [
-  { title: 'Exámenes resueltos de sintaxis', type: 'folder', detail: '5 archivos', meta: 'Actualizado hoy' },
-  { title: 'Guía rápida - Sintaxis.pdf', type: 'file', detail: '1,2 MB · PDF', meta: 'Modificado hace 2 días' },
-  { title: 'Esquemas oracionales', type: 'folder', detail: '3 subcarpetas', meta: 'Actualizado el lunes' },
-  { title: 'Actividades autocorregibles.xlsx', type: 'file', detail: 'Hoja de cálculo', meta: 'Añadido esta semana' },
-  { title: 'Lecturas recomendadas 2º BACH', type: 'folder', detail: 'Material de lectura', meta: 'Actualizado el mes pasado' },
-  { title: 'Banco de frases - Práctica', type: 'file', detail: 'Documento · 0,8 MB', meta: 'Revisado ayer' },
-];
+const materialsTree = {
+  title: 'Materiales',
+  type: 'folder',
+  children: [
+    {
+      title: 'Materiales del Centro',
+      type: 'folder',
+      children: [
+        {
+          title: '2º BACH',
+          type: 'folder',
+          children: [
+            {
+              title: 'Castellano',
+              type: 'folder',
+              children: [
+                {
+                  title: 'Sintaxis',
+                  type: 'folder',
+                  children: [
+                    { title: 'Exámenes resueltos de sintaxis', type: 'file', detail: '5 archivos', meta: 'Actualizado hoy' },
+                    { title: 'Guía rápida - Sintaxis.pdf', type: 'file', detail: '1,2 MB · PDF', meta: 'Modificado hace 2 días' },
+                    { title: 'Esquemas oracionales', type: 'folder', detail: '3 subcarpetas', meta: 'Actualizado el lunes' },
+                    { title: 'Actividades autocorregibles.xlsx', type: 'file', detail: 'Hoja de cálculo', meta: 'Añadido esta semana' },
+                  ],
+                },
+                {
+                  title: 'Literatura',
+                  type: 'folder',
+                  children: [
+                    { title: 'Lecturas recomendadas 2º BACH', type: 'file', detail: 'Material de lectura', meta: 'Actualizado el mes pasado' },
+                  ],
+                },
+              ],
+            },
+            {
+              title: 'Física',
+              type: 'folder',
+              children: [
+                { title: 'Banco de frases - Práctica', type: 'file', detail: 'Documento · 0,8 MB', meta: 'Revisado ayer' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: 'Recursos compartidos',
+      type: 'folder',
+      children: [
+        { title: 'Apuntes colaborativos', type: 'file', detail: 'Notas compartidas', meta: 'Actualizado esta semana' },
+        { title: 'Plantillas de ejercicios', type: 'file', detail: '3 documentos', meta: 'Añadido este mes' },
+      ],
+    },
+  ],
+};
 
 const upcomingClasses = [
   { subject: 'Matemáticas', date: '02/11/2025', time: '16:00 - 17:00' },
@@ -127,6 +175,17 @@ const products = [
 const formatCurrency = (value) => `${value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 const getCategoryLabel = (id) => storeCategories.find(cat => cat.id === id)?.label || 'Otros';
 const findProduct = (productId) => products.find(p => p.id === productId);
+const getMaterialsFolder = (path) => {
+  let current = materialsTree;
+  for (let i = 1; i < path.length; i++) {
+    const next = current.children?.find(child => child.type === 'folder' && child.title === path[i]);
+    if (!next) return materialsTree;
+    current = next;
+  }
+  return current;
+};
+
+const getMaterialsItems = (path) => getMaterialsFolder(path)?.children || [];
 
 const conversations = {
   profesores: [
@@ -383,17 +442,103 @@ function renderMaterials() {
   const container = document.getElementById('materialsList');
   const breadcrumb = document.getElementById('materialsPath');
   if (!container || !breadcrumb) return;
-  breadcrumb.textContent = state.materialsPath.join(' > ');
-  container.innerHTML = materials.map(item => `
-    <div class="material-row">
+
+  const items = getMaterialsItems(state.materialsPath);
+
+  breadcrumb.innerHTML = state.materialsPath.map((segment, idx) => `
+    <button class="crumb ${idx === state.materialsPath.length - 1 ? 'active' : ''}" data-index="${idx}">${segment}</button>
+    ${idx < state.materialsPath.length - 1 ? '<span class="crumb-separator">></span>' : ''}
+  `).join('');
+
+  const rows = [];
+
+  if (state.materialsPath.length > 1) {
+    const parentName = state.materialsPath[state.materialsPath.length - 2];
+    rows.push(`
+      <div class="material-row back-row" data-action="back">
+        <div class="material-icon"><i class="fa-solid fa-arrow-left"></i></div>
+        <div class="material-label">
+          <div class="title">Atrás</div>
+          <div class="subtitle">Volver a ${parentName}</div>
+        </div>
+        <div class="material-meta"></div>
+      </div>
+    `);
+  }
+
+  rows.push(...items.map(item => `
+    <div class="material-row ${item.type === 'folder' ? 'folder' : ''}" data-type="${item.type}" data-title="${item.title}">
       <div class="material-icon">${item.type === 'folder' ? '<i class="fa-solid fa-folder"></i>' : '<i class="fa-solid fa-file-lines"></i>'}</div>
       <div class="material-label">
         <div class="title">${item.title}</div>
-        <div class="subtitle">${item.detail}</div>
+        <div class="subtitle">${item.detail || (item.type === 'folder' ? 'Carpeta' : '')}</div>
       </div>
-      <div class="material-meta">${item.meta}</div>
+      <div class="material-meta">${item.meta || ''}</div>
     </div>
-  `).join('');
+  `));
+
+  container.innerHTML = rows.join('');
+
+  breadcrumb.querySelectorAll('.crumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.index);
+      state.materialsPath = state.materialsPath.slice(0, idx + 1);
+      renderMaterials();
+    });
+  });
+
+  container.querySelectorAll('.material-row').forEach(row => {
+    const action = row.dataset.action;
+    if (action === 'back') {
+      row.addEventListener('click', () => {
+        if (state.materialsPath.length > 1) {
+          state.materialsPath = state.materialsPath.slice(0, -1);
+          renderMaterials();
+        }
+      });
+      return;
+    }
+    const type = row.dataset.type;
+    const title = row.dataset.title;
+    if (type === 'folder') {
+      row.addEventListener('click', () => {
+        state.materialsPath = [...state.materialsPath, title];
+        renderMaterials();
+      });
+    }
+  });
+}
+
+function setupMaterialsFab() {
+  const fab = document.getElementById('materialsFab');
+  const menu = document.getElementById('materialsMenu');
+  if (!fab || !menu) return;
+
+  const closeMenu = () => {
+    menu.classList.add('d-none');
+    fab.setAttribute('aria-expanded', 'false');
+  };
+
+  fab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('d-none');
+    const expanded = !menu.classList.contains('d-none');
+    fab.setAttribute('aria-expanded', String(expanded));
+  });
+
+  menu.querySelectorAll('.fab-menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMenu();
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const isInside = menu.contains(e.target) || fab.contains(e.target);
+    if (!isInside) {
+      closeMenu();
+    }
+  });
 }
 
 function setupMaterialsFab() {
@@ -472,7 +617,14 @@ function renderStore() {
       <div class="fw-semibold">${p.name}</div>
       <div class="text-muted">${formatCurrency(p.price)}</div>
       <div class="product-actions">
-        <button class="btn btn-primary btn-sm add-to-cart" data-id="${p.id}">Añadir</button>
+        <div class="d-flex justify-content-between align-items-center gap-2">
+          <div class="qty-field">
+            <button class="qty-btn decrease" data-id="${p.id}" aria-label="Disminuir cantidad">-</button>
+            <input type="number" min="1" value="1" class="form-control form-control-sm qty-input" data-id="${p.id}">
+            <button class="qty-btn increase" data-id="${p.id}" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <button class="btn btn-primary btn-sm add-to-cart" data-id="${p.id}">Añadir</button>
+        </div>
         <button class="btn btn-outline-secondary btn-sm view-detail" data-id="${p.id}">Ver</button>
       </div>
     </div>
@@ -497,7 +649,11 @@ function renderStore() {
   grid.querySelectorAll('.add-to-cart').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      addToCart(btn.dataset.id, 1);
+      const card = btn.closest('.product-card');
+      const qtyInput = card?.querySelector('.qty-input');
+      const qty = Math.max(1, Number(qtyInput?.value) || 1);
+      addToCart(btn.dataset.id, qty);
+      if (qtyInput) qtyInput.value = '1';
     });
   });
 
@@ -506,6 +662,25 @@ function renderStore() {
       const product = products.find(p => p.id === card.dataset.id);
       state.selectedProduct = product;
       renderProductDetail();
+    });
+  });
+
+  grid.querySelectorAll('.qty-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.product-card');
+      const input = card?.querySelector('.qty-input');
+      if (!input) return;
+      const current = Math.max(1, Number(input.value) || 1);
+      const next = btn.classList.contains('increase') ? current + 1 : Math.max(1, current - 1);
+      input.value = String(next);
+    });
+  });
+
+  grid.querySelectorAll('.qty-input').forEach(input => {
+    input.addEventListener('click', (e) => e.stopPropagation());
+    input.addEventListener('change', () => {
+      input.value = String(Math.max(1, Number(input.value) || 1));
     });
   });
 }
