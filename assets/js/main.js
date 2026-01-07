@@ -61,6 +61,7 @@ const eventColors = {
   Mates: '#f3bc1b',
   Mat: '#f3bc1b',
 };
+const defaultEventColor = '#2e6edb';
 
 const calendarEvents = {
   '2026-09-02': [{ subject: 'Valenciano', time: '17:00 - 18:00' }],
@@ -329,7 +330,7 @@ function renderCalendar() {
     dayEl.innerHTML = `
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
       <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
-        const color = eventColors[ev.subject] || eventColors.Mates;
+        const color = getEventColor(ev);
         const label = ev.subject ? 'labelled' : '';
         const text = ev.subject || '';
         const time = ev.time ? `<span class="event-time">${ev.time}</span>` : '';
@@ -360,9 +361,11 @@ function renderDayEvents() {
     container.innerHTML = '<div class="text-muted">No hay eventos para esta fecha.</div>';
     return;
   }
-  container.innerHTML = dayEvents.map((ev, idx) => `
-    <div class="event-card" style="border-left-color:${eventColors[ev.subject] || eventColors.Mates}" data-index="${idx}">
-      <i class="fa-regular fa-calendar" style="color:${eventColors[ev.subject] || eventColors.Mates}"></i>
+  container.innerHTML = dayEvents.map((ev, idx) => {
+    const color = getEventColor(ev);
+    return `
+    <div class="event-card" style="border-left-color:${color}" data-index="${idx}">
+      <i class="fa-regular fa-calendar" style="color:${color}"></i>
       <div>
         <p class="event-title">Clase de ${ev.subject}</p>
         <small>${formatDate(state.selectedDate)} · ${ev.time || 'Horario por confirmar'}</small>
@@ -371,7 +374,8 @@ function renderDayEvents() {
         <i class="fa-regular fa-pen-to-square"></i>
       </button>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
   container.querySelectorAll('.edit-event-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -389,13 +393,18 @@ function formatDate(iso) {
   return date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
 }
 
+function getEventColor(eventData) {
+  return eventData.color || eventColors[eventData.subject] || defaultEventColor;
+}
+
 function toggleEventForm(show, options = {}) {
   const overlay = document.getElementById('eventFormOverlay');
   const dateLabel = document.getElementById('eventFormDate');
   const subjectInput = document.getElementById('eventSubject');
   const timeInput = document.getElementById('eventTime');
+  const colorInput = document.getElementById('eventColor');
   const submitBtn = document.getElementById('eventFormSubmit');
-  if (!overlay || !dateLabel || !subjectInput || !timeInput || !submitBtn) return;
+  if (!overlay || !dateLabel || !subjectInput || !timeInput || !colorInput || !submitBtn) return;
   if (show) {
     const { mode = 'add', eventIndex = null, eventData = {} } = options;
     state.editingEventIndex = mode === 'edit' ? eventIndex : null;
@@ -403,6 +412,7 @@ function toggleEventForm(show, options = {}) {
     dateLabel.textContent = state.selectedDate ? formatDate(state.selectedDate) : 'Selecciona una fecha';
     subjectInput.value = eventData.subject || '';
     timeInput.value = eventData.time || '';
+    colorInput.value = getEventColor(eventData);
     submitBtn.textContent = mode === 'edit' ? 'Guardar cambios' : 'Añadir';
     overlay.dataset.mode = mode;
     subjectInput.focus();
@@ -440,13 +450,14 @@ function handleAddEvent() {
     if (!state.selectedDate) return;
     const subject = document.getElementById('eventSubject').value.trim() || 'Nuevo evento';
     const time = document.getElementById('eventTime').value.trim();
+    const color = document.getElementById('eventColor').value || defaultEventColor;
     const iso = state.selectedDate;
     if (!calendarEvents[iso]) calendarEvents[iso] = [];
     const isEditMode = overlay.dataset.mode === 'edit' && state.editingEventIndex !== null;
     if (isEditMode && calendarEvents[iso][state.editingEventIndex]) {
-      calendarEvents[iso][state.editingEventIndex] = { subject, time };
+      calendarEvents[iso][state.editingEventIndex] = { subject, time, color };
     } else {
-      calendarEvents[iso].push({ subject, time });
+      calendarEvents[iso].push({ subject, time, color });
     }
     toggleEventForm(false);
     renderCalendar();
