@@ -25,18 +25,21 @@ const state = {
 const newsItems = [
   {
     title: 'Ya puedes descargar el modelo actualizado de examen de Matemáticas II para la prueba de EBAU.',
+    detail: 'Incluye los nuevos criterios de corrección y ejemplos de preguntas tipo. Disponible en la sección de materiales del centro.',
     author: 'Dpto. de Matemáticas',
     time: 'Hace 2 horas',
     image: 'https://img.icons8.com/color/96/abacus.png',
   },
   {
     title: 'La plataforma estará en mantenimiento el sábado de 22:00 a 23:00. Guarda tus progresos antes.\npor: Dpto. de Matemáticas',
+    detail: 'Durante esa franja el acceso quedará limitado. Recomendamos descargar apuntes y completar tareas pendientes antes del inicio.',
     author: 'Mantenimiento',
     time: 'Hace 3 horas',
     image: 'https://img.icons8.com/fluency/96/maintenance.png',
   },
   {
     title: 'Nueva clase de refuerzo de Química (Enlace químico) disponible el jueves a las 17:30.',
+    detail: 'Reserva tu plaza en la sección de Clases de Refuerzo. Habrá repaso de enlaces covalentes e iónicos con ejercicios prácticos.',
     author: 'Dpto. de Química',
     time: 'Hace 3 horas',
     image: 'https://img.icons8.com/fluency/96/test-tube.png',
@@ -230,16 +233,29 @@ const conversations = {
 function renderNews() {
   const container = document.getElementById('newsList');
   if (!container) return;
-  container.innerHTML = newsItems.map(item => `
+  container.innerHTML = newsItems.map((item, index) => `
     <div class="news-card">
       <img src="${item.image}" alt="${item.title}">
       <div>
         <div class="news-title">${item.title}</div>
         <div class="news-meta">${item.time} · Publicado por: ${item.author}</div>
-        <a class="news-link" href="#">Leer más</a>
+        <p class="news-detail d-none" id="newsDetail-${index}">${item.detail || ''}</p>
+        <a class="news-link" href="#" data-index="${index}">Leer más</a>
       </div>
     </div>
   `).join('');
+
+  container.querySelectorAll('.news-link').forEach(link => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const index = link.dataset.index;
+      const detail = document.getElementById(`newsDetail-${index}`);
+      if (!detail) return;
+      const isHidden = detail.classList.contains('d-none');
+      detail.classList.toggle('d-none', !isHidden);
+      link.textContent = isHidden ? 'Leer menos' : 'Leer más';
+    });
+  });
 }
 
 function renderNotifications() {
@@ -1013,9 +1029,6 @@ function setStoreTab(tab) {
 }
 
 function setupStoreTabs() {
-  document.querySelectorAll('.store-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => setStoreTab(btn.dataset.tab));
-  });
   const openCartBtn = document.getElementById('openCartFromCatalog');
   if (openCartBtn) openCartBtn.addEventListener('click', () => setStoreTab('cart'));
 }
