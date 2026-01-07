@@ -718,6 +718,10 @@ body {
   gap: 16px;
 }
 
+.catalog-content {
+  position: relative;
+}
+
 .product-card {
   background: #f3f0f5;
   border-radius: 16px;
@@ -748,7 +752,10 @@ body {
 }
 
 .product-detail {
-  margin-top: 18px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   border-radius: 16px;
   border: 1px solid #e0e2eb;
   padding: 16px;
@@ -756,6 +763,9 @@ body {
   grid-template-columns: 2fr 1fr;
   gap: 18px;
   align-items: center;
+  background: white;
+  box-shadow: 0 20px 40px rgba(34, 38, 52, 0.18);
+  z-index: 4;
 }
 
 .product-gallery {
@@ -808,6 +818,22 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
+}
+
+.cart-notice {
+  position: sticky;
+  top: 0;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #e9f3ff;
+  border: 1px solid rgba(46, 110, 219, 0.25);
+  color: #2f3f61;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 18px rgba(46, 110, 219, 0.12);
 }
 
 .store-tab {
@@ -910,18 +936,6 @@ body {
 .qty-field input {
   width: 60px;
   text-align: center;
-}
-
-.qty-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  border: 1px solid #d6d8e0;
-  background: #eef2f8;
-  font-weight: 800;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
 }
 
 .payment-steps {

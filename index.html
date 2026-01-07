@@ -35,7 +35,6 @@
         <div></div>
         <div class="actions">
           <button class="icon-btn" title="Ajustes"><i class="fa-solid fa-gear"></i><span class="icon-text">Ajustes</span></button>
-          <div class="avatar">M</div>
           <div class="avatar user-photo"></div>
         </div>
       </header>
@@ -144,12 +143,6 @@
 
       <section class="section d-none" id="tienda" aria-label="Tienda">
         <div class="card-panel">
-          <div class="store-tabs">
-            <button class="store-tab-btn active" data-tab="catalog">Catálogo</button>
-            <button class="store-tab-btn" data-tab="cart">Carrito</button>
-            <button class="store-tab-btn" data-tab="payment">Pasarela de pago</button>
-          </div>
-
           <div class="store-tab" id="catalogTab">
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
               <div class="category-pills" id="categoryPills"></div>
@@ -160,8 +153,11 @@
                 </button>
               </div>
             </div>
-            <div id="tiendaGrid" class="store-grid"></div>
-            <div id="productDetail" class="product-detail d-none"></div>
+            <div class="catalog-content">
+              <div id="tiendaGrid" class="store-grid"></div>
+              <div id="productDetail" class="product-detail d-none"></div>
+            </div>
+            <div id="cartNotice" class="cart-notice d-none" role="status" aria-live="polite"></div>
           </div>
 
           <div class="store-tab d-none" id="cartTab">
