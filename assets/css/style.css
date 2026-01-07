@@ -938,18 +938,6 @@ body {
   text-align: center;
 }
 
-.qty-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  border: 1px solid #d6d8e0;
-  background: #eef2f8;
-  font-weight: 800;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-}
-
 .payment-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -619,9 +619,7 @@ function renderStore() {
       <div class="product-actions">
         <div class="d-flex justify-content-between align-items-center gap-2">
           <div class="qty-field">
-            <button class="qty-btn decrease" data-id="${p.id}" aria-label="Disminuir cantidad">-</button>
             <input type="number" min="1" value="1" class="form-control form-control-sm qty-input" data-id="${p.id}">
-            <button class="qty-btn increase" data-id="${p.id}" aria-label="Aumentar cantidad">+</button>
           </div>
           <button class="btn btn-primary btn-sm add-to-cart" data-id="${p.id}">Añadir</button>
         </div>
@@ -655,18 +653,6 @@ function renderStore() {
     });
   });
 
-  grid.querySelectorAll('.qty-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const card = btn.closest('.product-card');
-      const input = card?.querySelector('.qty-input');
-      if (!input) return;
-      const current = Math.max(1, Number(input.value) || 1);
-      const next = btn.classList.contains('increase') ? current + 1 : Math.max(1, current - 1);
-      input.value = String(next);
-    });
-  });
-
   grid.querySelectorAll('.qty-input').forEach(input => {
     input.addEventListener('click', (e) => e.stopPropagation());
     input.addEventListener('change', () => {
@@ -689,7 +675,7 @@ function renderProductDetail() {
       ${galleryItems}
     </div>
     <div class="product-info">
-      <button class="icon-btn mb-3" id="closeDetail"><i class="fa-solid fa-arrow-left"></i></button>
+      <button class="icon-btn mb-3" id="closeDetail"><i class="fa-solid fa-arrow-left"></i><span class="icon-text">Atras</span></button>
       <h2>${product.name}</h2>
       <p class="text-muted">Precio: ${formatCurrency(product.price)}</p>
       <p><strong>Descripción:</strong> ${product.description}</p>
