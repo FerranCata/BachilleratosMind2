@@ -289,6 +289,23 @@ body {
   position: relative;
 }
 
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-weight: 700;
+  color: #3f4c6b;
+}
+
+.calendar-weekdays span {
+  padding: 4px 0;
+  border-radius: 999px;
+  background: #eef3ff;
+  border: 1px solid #d7e2ff;
+}
+
 .select-chip select {
   border-radius: 40px;
   padding: 8px 16px;
@@ -304,6 +321,7 @@ body {
   grid-template-columns: repeat(7, 1fr);
   gap: 12px;
   margin-bottom: 18px;
+  grid-auto-rows: 110px;
 }
 
 .calendar-day {
@@ -319,6 +337,8 @@ body {
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .calendar-day.inactive {
@@ -339,6 +359,8 @@ body {
   display: grid;
   gap: 6px;
   width: 100%;
+  max-height: 52px;
+  overflow: hidden;
 }
 
 .event-pill {
@@ -360,6 +382,13 @@ body {
 
 .event-pill.labelled {
   width: 100%;
+}
+
+.event-pill.more {
+  background: #eef2ff;
+  border-style: dashed;
+  color: #3f4c6b;
+  justify-content: center;
 }
 
 .event-pill::before {
@@ -395,6 +424,23 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.calendar-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.calendar-actions .fab {
+  position: static;
+  width: 46px;
+  height: 46px;
+  font-size: 18px;
+}
+
+.calendar-actions .fab i {
+  font-size: 18px;
 }
 
 .event-card {
@@ -444,6 +490,50 @@ body {
 .fab i {
   color: #ffffff;
   font-size: 22px;
+}
+
+.event-color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.color-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: var(--swatch-color, #2e6edb);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.color-swatch.selected {
+  border-color: #1f3d7a;
+  box-shadow: 0 0 0 2px rgba(46, 110, 219, 0.35);
+}
+
+.color-picker-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3f4c6b;
+  border: 1px dashed #cdd8f5;
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: #f5f7ff;
+  cursor: pointer;
+}
+
+.color-picker-label input[type="color"] {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
 }
 
 .event-form-overlay {

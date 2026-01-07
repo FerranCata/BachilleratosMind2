@@ -327,15 +327,18 @@ function renderCalendar() {
     dayEl.className = 'calendar-day ' + (isCurrentMonth ? '' : 'inactive');
     if (state.selectedDate === iso) dayEl.classList.add('selected');
     if (iso === new Date().toISOString().split('T')[0]) dayEl.classList.add('today');
+    const events = calendarEvents[iso] || [];
+    const visibleEvents = events.slice(0, 2);
+    const remaining = events.length - visibleEvents.length;
     dayEl.innerHTML = `
       <div class="day-number">${isCurrentMonth ? dayNumber : ''}</div>
-      <div class="day-events">${(calendarEvents[iso] || []).map(ev => {
+      <div class="day-events">${visibleEvents.map(ev => {
         const color = getEventColor(ev);
         const label = ev.subject ? 'labelled' : '';
         const text = ev.subject || '';
         const time = ev.time ? `<span class="event-time">${ev.time}</span>` : '';
         return `<span class="event-pill ${label}" style="--event-color:${color};" title="${text}${ev.time ? ` · ${ev.time}` : ''}"><span class="event-name">${text}</span>${time}</span>`;
-      }).join('')}</div>
+      }).join('')}${remaining > 0 ? `<span class="event-pill more">+${remaining} más</span>` : ''}</div>
     `;
     if (isCurrentMonth) {
       dayEl.addEventListener('click', () => {
@@ -397,6 +400,14 @@ function getEventColor(eventData) {
   return eventData.color || eventColors[eventData.subject] || defaultEventColor;
 }
 
+function updateEventColorSelection(color) {
+  const swatches = document.querySelectorAll('.color-swatch');
+  if (!swatches.length) return;
+  swatches.forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.color?.toLowerCase() === color.toLowerCase());
+  });
+}
+
 function toggleEventForm(show, options = {}) {
   const overlay = document.getElementById('eventFormOverlay');
   const dateLabel = document.getElementById('eventFormDate');
@@ -413,6 +424,7 @@ function toggleEventForm(show, options = {}) {
     subjectInput.value = eventData.subject || '';
     timeInput.value = eventData.time || '';
     colorInput.value = getEventColor(eventData);
+    updateEventColorSelection(colorInput.value);
     submitBtn.textContent = mode === 'edit' ? 'Guardar cambios' : 'Añadir';
     overlay.dataset.mode = mode;
     subjectInput.focus();
@@ -430,7 +442,22 @@ function handleAddEvent() {
   const cancelBtn = document.getElementById('cancelEvent');
   const closeBtn = document.getElementById('closeEventForm');
   const overlay = document.getElementById('eventFormOverlay');
+  const colorInput = document.getElementById('eventColor');
+  const swatches = document.querySelectorAll('.color-swatch');
   if (!addBtn || !form || !cancelBtn || !closeBtn || !overlay) return;
+
+  if (colorInput && swatches.length) {
+    swatches.forEach(btn => {
+      btn.style.setProperty('--swatch-color', btn.dataset.color);
+      btn.addEventListener('click', () => {
+        colorInput.value = btn.dataset.color;
+        updateEventColorSelection(colorInput.value);
+      });
+    });
+    colorInput.addEventListener('input', () => updateEventColorSelection(colorInput.value));
+    colorInput.addEventListener('change', () => updateEventColorSelection(colorInput.value));
+    updateEventColorSelection(colorInput.value);
+  }
 
   addBtn.addEventListener('click', () => {
     if (!state.selectedDate) {
