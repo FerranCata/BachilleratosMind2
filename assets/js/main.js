@@ -371,6 +371,10 @@ function renderCalendar() {
     `;
     if (isCurrentMonth) {
       dayEl.addEventListener('click', () => {
+        if (state.selectedDate === iso) {
+          toggleEventForm(true, { mode: 'add' });
+          return;
+        }
         state.selectedDate = iso;
         renderCalendar();
         renderDayEvents();
