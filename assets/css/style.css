@@ -715,10 +715,11 @@ body {
 }
 
 .class-carousel-wrapper {
-  overflow-x: auto;
-  padding-bottom: 6px;
+  overflow-y: auto;
+  padding-right: 6px;
   width: 100%;
-  scroll-snap-type: x mandatory;
+  max-height: 220px;
+  scroll-snap-type: y mandatory;
   scrollbar-gutter: stable both-edges;
   scrollbar-width: thin;
   scrollbar-color: #b7c2d6 #eef2f8;
@@ -727,10 +728,9 @@ body {
 
 .class-carousel {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: clamp(200px, 70vw, 260px);
+  grid-auto-flow: row;
   gap: 14px;
-  width: max-content;
+  width: 100%;
 }
 
 .classes-panel {
@@ -749,7 +749,7 @@ body {
 }
 
 .class-carousel-wrapper::-webkit-scrollbar {
-  height: 10px;
+  width: 10px;
 }
 
 .class-carousel-wrapper::-webkit-scrollbar-track {
