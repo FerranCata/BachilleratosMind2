@@ -20,7 +20,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .app-wrapper {
@@ -719,10 +719,16 @@ body {
   padding-bottom: 6px;
   width: 100%;
   scroll-snap-type: x mandatory;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: #b7c2d6 #eef2f8;
+  -webkit-overflow-scrolling: touch;
 }
 
 .class-carousel {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(200px, 70vw, 260px);
   gap: 14px;
   width: max-content;
 }
@@ -737,9 +743,23 @@ body {
   border-radius: 12px;
   border: 1px solid #e0e2eb;
   text-align: center;
-  min-width: 230px;
+  width: 100%;
   flex: 0 0 auto;
   scroll-snap-align: start;
+}
+
+.class-carousel-wrapper::-webkit-scrollbar {
+  height: 10px;
+}
+
+.class-carousel-wrapper::-webkit-scrollbar-track {
+  background: #eef2f8;
+  border-radius: 999px;
+}
+
+.class-carousel-wrapper::-webkit-scrollbar-thumb {
+  background: #b7c2d6;
+  border-radius: 999px;
 }
 
 .class-card h4 {
