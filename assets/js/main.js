@@ -179,6 +179,15 @@ const products = [
 const formatCurrency = (value) => `${value.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
 const getCategoryLabel = (id) => storeCategories.find(cat => cat.id === id)?.label || 'Otros';
 const findProduct = (productId) => products.find(p => p.id === productId);
+const padDateNumber = (value) => String(value).padStart(2, '0');
+const toIsoDate = (date) => `${date.getFullYear()}-${padDateNumber(date.getMonth() + 1)}-${padDateNumber(date.getDate())}`;
+const parseClassDate = (dateString) => {
+  if (!dateString) return null;
+  const [day, month, year] = dateString.split('/').map(Number);
+  if (!day || !month || !year) return null;
+  const date = new Date(year, month - 1, day);
+  return Number.isNaN(date.getTime()) ? null : toIsoDate(date);
+};
 const getMaterialsFolder = (path) => {
   let current = materialsTree;
   for (let i = 1; i < path.length; i++) {
@@ -636,11 +645,33 @@ function renderClasses() {
       <div class="fw-semibold">${cls.date}</div>
       <div class="fw-semibold">${cls.time}</div>
       <div class="d-flex justify-content-center gap-2">
-        <button class="btn btn-primary">RESERVAR</button>
-        <button class="btn btn-outline-primary rounded-circle"><i class="fa-solid fa-plus"></i></button>
+        <button class="btn btn-primary reserve-class" data-subject="${cls.subject}" data-date="${cls.date}" data-time="${cls.time}">RESERVAR</button>
+        <button class="btn btn-outline-primary rounded-circle add-class-event" data-subject="${cls.subject}" data-date="${cls.date}" data-time="${cls.time}" title="Añadir al calendario">
+          <i class="fa-solid fa-plus"></i>
+        </button>
       </div>
     </div>
   `).join('');
+
+  const addClassEvent = (button) => {
+    const { subject, date, time } = button.dataset;
+    const iso = parseClassDate(date);
+    if (!iso) return;
+    if (!calendarEvents[iso]) calendarEvents[iso] = [];
+    calendarEvents[iso].push({ subject, time, color: getEventColor({ subject }) });
+    const eventDate = new Date(iso);
+    state.currentMonth = eventDate.getMonth();
+    state.currentYear = eventDate.getFullYear();
+    state.selectedDate = iso;
+    state.currentSection = 'calendario';
+    updateNavigation();
+    renderCalendar();
+    renderDayEvents();
+  };
+
+  carousel.querySelectorAll('.reserve-class, .add-class-event').forEach(button => {
+    button.addEventListener('click', () => addClassEvent(button));
+  });
 
   const recorded = document.getElementById('recordedClasses');
   if (!recorded) return;
