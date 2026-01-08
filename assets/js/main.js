@@ -119,6 +119,27 @@ const materialsTree = {
         { title: 'Plantillas de ejercicios', type: 'file', detail: '3 documentos', meta: 'Añadido este mes' },
       ],
     },
+    {
+      title: 'Recursos Adicionales',
+      type: 'folder',
+      children: [
+        {
+          title: 'Videos',
+          type: 'folder',
+          children: [
+            { title: 'Matemáticas', type: 'folder', detail: '12 vídeos', meta: 'Actualizado hoy' },
+            { title: 'Química', type: 'folder', detail: '8 vídeos', meta: 'Actualizado ayer' },
+            { title: 'Física', type: 'folder', detail: '10 vídeos', meta: 'Actualizado esta semana' },
+            { title: 'Biología', type: 'folder', detail: '6 vídeos', meta: 'Nuevo contenido' },
+            { title: 'Historia', type: 'folder', detail: '5 vídeos', meta: 'Actualizado ayer' },
+            { title: 'Valenciano', type: 'folder', detail: '7 vídeos', meta: 'Actualizado esta semana' },
+            { title: 'Inglés', type: 'folder', detail: '9 vídeos', meta: 'Actualizado hoy' },
+            { title: 'Economía', type: 'folder', detail: '4 vídeos', meta: 'Actualizado hoy' },
+            { title: 'Filosofía', type: 'folder', detail: '3 vídeos', meta: 'Nuevo contenido' },
+          ],
+        },
+      ],
+    },
   ],
 };
 
@@ -126,9 +147,25 @@ const upcomingClasses = [
   { subject: 'Matemáticas', date: '02/11/2025', time: '16:00 - 17:00' },
   { subject: 'Valenciano', date: '03/11/2025', time: '18:00 - 19:00' },
   { subject: 'Biología', date: '04/11/2025', time: '15:00 - 16:00' },
+  { subject: 'Historia', date: '05/11/2025', time: '17:00 - 18:30' },
+  { subject: 'Física', date: '06/11/2025', time: '16:30 - 17:30' },
+  { subject: 'Inglés', date: '07/11/2025', time: '18:00 - 19:30' },
+  { subject: 'Química', date: '08/11/2025', time: '16:00 - 17:00' },
+  { subject: 'Economía', date: '09/11/2025', time: '17:30 - 18:30' },
+  { subject: 'Filosofía', date: '10/11/2025', time: '18:00 - 19:00' },
 ];
 
-const recordedClasses = ['Matemáticas', 'Química', 'Física'];
+const recordedClasses = [
+  { subject: 'Matemáticas' },
+  { subject: 'Química' },
+  { subject: 'Física' },
+  { subject: 'Biología' },
+  { subject: 'Historia' },
+  { subject: 'Valenciano' },
+  { subject: 'Inglés' },
+  { subject: 'Economía' },
+  { subject: 'Filosofía' },
+];
 
 const storeCategories = [
   { id: 'todo', label: 'Todo' },
@@ -669,10 +706,22 @@ function renderClasses() {
   if (!recorded) return;
   recorded.innerHTML = recordedClasses.map(cls => `
     <div class="recorded-item">
-      <div class="title"><i class="fa-solid fa-video me-2"></i>${cls}</div>
-      <i class="fa-solid fa-chevron-down text-muted"></i>
+      <div class="title"><i class="fa-solid fa-video me-2"></i>${cls.subject}</div>
+      <div class="recorded-actions">
+        <button class="btn btn-outline-primary btn-sm view-video" data-subject="${cls.subject}">Video</button>
+        <i class="fa-solid fa-chevron-down text-muted"></i>
+      </div>
     </div>
   `).join('');
+
+  recorded.querySelectorAll('.view-video').forEach(button => {
+    button.addEventListener('click', () => {
+      state.materialsPath = ['Materiales', 'Recursos Adicionales', 'Videos', button.dataset.subject];
+      state.currentSection = 'materiales';
+      updateNavigation();
+      renderMaterials();
+    });
+  });
 }
 
 function renderStore() {
