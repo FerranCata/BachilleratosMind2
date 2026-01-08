@@ -63,24 +63,7 @@ const eventColors = {
 };
 const defaultEventColor = '#2e6edb';
 
-const calendarEvents = {
-  '2026-09-02': [{ subject: 'Valenciano', time: '17:00 - 18:00' }],
-  '2026-09-03': [
-    { subject: 'Cast', time: '17:00 - 18:00' },
-    { subject: 'Mat', time: '18:00 - 19:00' },
-  ],
-  '2026-09-07': [
-    { subject: 'Cast', time: '' },
-    { subject: 'In', time: '' },
-  ],
-  '2026-09-08': [{ subject: 'Inglés', time: '10:00 - 11:00' }],
-  '2026-09-10': [{ subject: 'Mates', time: '19:00 - 20:00' }],
-  '2026-09-15': [
-    { subject: 'Cast', time: '' },
-    { subject: 'In', time: '' },
-    { subject: 'Mat', time: '' },
-  ],
-};
+const calendarEvents = {};
 
 const materialsTree = {
   title: 'Materiales',
@@ -669,7 +652,16 @@ function renderClasses() {
     renderDayEvents();
   };
 
-  carousel.querySelectorAll('.reserve-class, .add-class-event').forEach(button => {
+  carousel.querySelectorAll('.reserve-class').forEach(button => {
+    button.addEventListener('click', () => {
+      const { subject, date, time } = button.dataset;
+      const message = `¿Confirmas la reserva de la clase de refuerzo de ${subject} el ${date} a las ${time}?`;
+      if (!window.confirm(message)) return;
+      addClassEvent(button);
+    });
+  });
+
+  carousel.querySelectorAll('.add-class-event').forEach(button => {
     button.addEventListener('click', () => addClassEvent(button));
   });
 
