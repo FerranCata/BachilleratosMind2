@@ -666,9 +666,6 @@ function renderClasses() {
       <div class="fw-semibold">${cls.time}</div>
       <div class="d-flex justify-content-center gap-2">
         <button class="btn btn-primary reserve-class" data-subject="${cls.subject}" data-date="${cls.date}" data-time="${cls.time}">RESERVAR</button>
-        <button class="btn btn-outline-primary rounded-circle add-class-event" data-subject="${cls.subject}" data-date="${cls.date}" data-time="${cls.time}" title="Añadir al calendario">
-          <i class="fa-solid fa-plus"></i>
-        </button>
       </div>
     </div>
   `).join('');
@@ -696,10 +693,6 @@ function renderClasses() {
       if (!window.confirm(message)) return;
       addClassEvent(button);
     });
-  });
-
-  carousel.querySelectorAll('.add-class-event').forEach(button => {
-    button.addEventListener('click', () => addClassEvent(button));
   });
 
   const recorded = document.getElementById('recordedClasses');

@@ -719,6 +719,11 @@ body {
   overflow-x: auto;
   padding-bottom: 6px;
   scroll-snap-type: x mandatory;
+  width: 100%;
+}
+
+.classes-panel {
+  overflow-x: hidden;
 }
 
 .class-card {
