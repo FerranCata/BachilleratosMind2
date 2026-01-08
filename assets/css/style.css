@@ -714,9 +714,11 @@ body {
 }
 
 .class-carousel {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
   gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
 }
 
 .class-card {
@@ -725,6 +727,9 @@ body {
   border-radius: 12px;
   border: 1px solid #e0e2eb;
   text-align: center;
+  min-width: 230px;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
 
 .class-card h4 {
@@ -754,12 +759,32 @@ body {
   font-weight: 700;
 }
 
+.recorded-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .cta-box {
   background: #eef3ff;
   padding: 12px;
   border-radius: 14px;
   border: 1px solid #d2ddff;
   min-width: 230px;
+}
+
+.recorded-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.recorded-list {
+  max-width: 420px;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
 }
 
 .category-pills {
@@ -1578,6 +1603,12 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+  .recorded-layout {
+    flex-direction: column;
+  }
+  .recorded-list {
+    max-width: 100%;
   }
   .cta-box {
     width: 100%;
