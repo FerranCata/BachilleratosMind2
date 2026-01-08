@@ -331,11 +331,11 @@ function renderCalendar() {
     const dayNumber = i - (startWeekday - 2);
     const date = new Date(state.currentYear, state.currentMonth, dayNumber);
     const isCurrentMonth = dayNumber > 0 && dayNumber <= daysInMonth;
-    const iso = date.toISOString().split('T')[0];
+    const iso = toIsoDate(date);
     const dayEl = document.createElement('div');
     dayEl.className = 'calendar-day ' + (isCurrentMonth ? '' : 'inactive');
     if (state.selectedDate === iso) dayEl.classList.add('selected');
-    if (iso === new Date().toISOString().split('T')[0]) dayEl.classList.add('today');
+    if (iso === toIsoDate(new Date())) dayEl.classList.add('today');
     const events = calendarEvents[iso] || [];
     const visibleEvents = events.slice(0, 2);
     const remaining = events.length - visibleEvents.length;
@@ -470,7 +470,7 @@ function handleAddEvent() {
 
   addBtn.addEventListener('click', () => {
     if (!state.selectedDate) {
-      const todayIso = new Date().toISOString().split('T')[0];
+      const todayIso = toIsoDate(new Date());
       state.selectedDate = todayIso;
       renderCalendar();
     }
