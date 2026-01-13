@@ -65,6 +65,20 @@ const defaultEventColor = '#2e6edb';
 
 const calendarEvents = {};
 
+const sidebarToggleClass = 'sidebar-open';
+
+const isNarrowScreen = () => window.matchMedia('(max-width: 1100px)').matches;
+
+const setSidebarOpen = (isOpen) => {
+  document.body.classList.toggle(sidebarToggleClass, isOpen);
+};
+
+const closeSidebarForNarrow = () => {
+  if (isNarrowScreen()) {
+    setSidebarOpen(false);
+  }
+};
+
 const materialsTree = {
   title: 'Materiales',
   type: 'folder',
@@ -313,6 +327,7 @@ function setupNavigation() {
     btn.addEventListener('click', () => {
       state.currentSection = btn.dataset.section;
       updateNavigation();
+      closeSidebarForNarrow();
     });
   });
 }
@@ -1232,10 +1247,29 @@ function initCommTabs() {
   });
 }
 
+function setupSidebarToggle() {
+  const toggle = document.getElementById('sidebarToggle');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if (toggle) {
+    toggle.addEventListener('click', () => {
+      setSidebarOpen(!document.body.classList.contains(sidebarToggleClass));
+    });
+  }
+  if (backdrop) {
+    backdrop.addEventListener('click', () => setSidebarOpen(false));
+  }
+  window.addEventListener('resize', () => {
+    if (!isNarrowScreen()) {
+      setSidebarOpen(false);
+    }
+  });
+}
+
 function init() {
   renderNews();
   renderNotifications();
   setupNavigation();
+  setupSidebarToggle();
   fillSelectOptions();
   renderCalendar();
   renderMaterials();
