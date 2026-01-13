@@ -1592,10 +1592,10 @@ body {
   .sidebar {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     width: min(280px, 90vw);
     height: 100vh;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: transform 0.25s ease;
     z-index: 1001;
     flex-direction: column;
