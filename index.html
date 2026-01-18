@@ -15,7 +15,9 @@
   <div class="app-wrapper">
     <aside class="sidebar">
       <div class="brand">
-        <img src="assets/img/bachilleratos-mind.png" class="brand-image" alt="Bachillerato's Mind">
+        <button class="brand-link" id="brandLink" data-section="inicio" aria-label="Ir a inicio">
+          <img src="assets/img/bachilleratos-mind.png" class="brand-image" alt="Bachillerato's Mind">
+        </button>
       </div>
       <nav class="nav-list">
         <button class="nav-item active" data-section="inicio"><i class="fa-regular fa-circle-xmark"></i><span>Inicio</span><i class="fa-solid fa-chevron-right"></i></button>
@@ -33,9 +35,10 @@
 
     <main class="main">
       <header class="topbar">
-        <div></div>
-        <div class="actions">
+        <div class="topbar-left">
           <button class="icon-btn sidebar-toggle" id="sidebarToggle" title="Menú"><i class="fa-solid fa-bars"></i><span class="icon-text">Menú</span></button>
+        </div>
+        <div class="actions">
           <button class="icon-btn" title="Ajustes"><i class="fa-solid fa-gear"></i><span class="icon-text">⚙</span></button>
           <div class="avatar user-photo"></div>
         </div>

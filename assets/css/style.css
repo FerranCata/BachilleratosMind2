@@ -56,6 +56,15 @@ body {
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
 }
 
+.brand-link {
+  border: none;
+  background: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 .brand-logo {
   width: 48px;
   height: 48px;
@@ -150,6 +159,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px 4px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .actions {
@@ -1666,8 +1681,6 @@ body {
     padding: 14px 16px;
   }
   .topbar {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 10px;
   }
   .sidebar {
