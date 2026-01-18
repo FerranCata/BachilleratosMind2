@@ -385,14 +385,21 @@ function setupNavigation() {
 function fillSelectOptions() {
   const monthSelect = document.getElementById('monthSelect');
   const yearSelect = document.getElementById('yearSelect');
+  const prevMonthBtn = document.getElementById('prevMonthBtn');
+  const nextMonthBtn = document.getElementById('nextMonthBtn');
   if (!monthSelect || !yearSelect) return;
   const months = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
   monthSelect.innerHTML = months.map((m, i) => `<option value="${i}">${m}</option>`).join('');
-  const currentYear = new Date().getFullYear();
-  const range = Array.from({ length: 5 }, (_, idx) => currentYear - 1 + idx);
-  yearSelect.innerHTML = range.map(y => `<option value="${y}">${y}</option>`).join('');
-  monthSelect.value = state.currentMonth;
-  yearSelect.value = state.currentYear;
+  const setYearOptions = (baseYear) => {
+    const range = Array.from({ length: 5 }, (_, idx) => baseYear - 1 + idx);
+    yearSelect.innerHTML = range.map(y => `<option value="${y}">${y}</option>`).join('');
+  };
+  const syncSelects = () => {
+    monthSelect.value = state.currentMonth;
+    yearSelect.value = state.currentYear;
+  };
+  setYearOptions(state.currentYear);
+  syncSelects();
   monthSelect.addEventListener('change', (e) => {
     state.currentMonth = Number(e.target.value);
     renderCalendar();
@@ -401,6 +408,24 @@ function fillSelectOptions() {
     state.currentYear = Number(e.target.value);
     renderCalendar();
   });
+
+  const shiftMonth = (delta) => {
+    const nextDate = new Date(state.currentYear, state.currentMonth + delta, 1);
+    state.currentMonth = nextDate.getMonth();
+    state.currentYear = nextDate.getFullYear();
+    if (![...yearSelect.options].some(opt => Number(opt.value) === state.currentYear)) {
+      setYearOptions(state.currentYear);
+    }
+    syncSelects();
+    renderCalendar();
+  };
+
+  if (prevMonthBtn) {
+    prevMonthBtn.addEventListener('click', () => shiftMonth(-1));
+  }
+  if (nextMonthBtn) {
+    nextMonthBtn.addEventListener('click', () => shiftMonth(1));
+  }
 }
 
 function renderCalendar() {
