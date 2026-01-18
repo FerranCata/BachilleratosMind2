@@ -494,14 +494,19 @@ body {
   gap: 12px;
 }
 
-.calendar-events-header .fab {
+.calendar-events-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.calendar-events-footer .fab {
   position: static;
   width: 46px;
   height: 46px;
   font-size: 18px;
 }
 
-.calendar-events-header .fab i {
+.calendar-events-footer .fab i {
   font-size: 18px;
 }
 
