@@ -1035,10 +1035,10 @@ body {
 
 .cta-box {
   background: #eef3ff;
-  padding: 12px;
+  padding: 18px 20px;
   border-radius: 14px;
   border: 1px solid #d2ddff;
-  min-width: 280px;
+  min-width: 340px;
 }
 
 .recorded-layout {
