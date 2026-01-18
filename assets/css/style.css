@@ -1148,7 +1148,7 @@ body {
   width: 100%;
   border-radius: 16px;
   border: 1px solid #e0e2eb;
-  padding: 16px;
+  padding: 48px 16px 16px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 18px;
@@ -1156,6 +1156,13 @@ body {
   background: white;
   box-shadow: 0 20px 40px rgba(34, 38, 52, 0.18);
   z-index: 4;
+}
+
+.product-detail #closeDetail {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  margin: 0;
 }
 
 .product-gallery {
