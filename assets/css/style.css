@@ -429,22 +429,42 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: absolute;
+  background: #ffffff;
+  z-index: 4;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
 }
 
-.calendar-actions {
+.calendar-events-header {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
 }
 
-.calendar-actions .fab {
+.calendar-events-header .text-muted.small {
+  font-size: 0.9rem;
+}
+
+.calendar-events-header h5 {
+  font-size: 1.1rem;
+}
+
+.calendar-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendar-events-header .fab {
   position: static;
   width: 46px;
   height: 46px;
   font-size: 18px;
 }
 
-.calendar-actions .fab i {
+.calendar-events-header .fab i {
   font-size: 18px;
 }
 
@@ -548,7 +568,7 @@ body {
   display: grid;
   place-items: center;
   border-radius: 18px;
-  z-index: 2;
+  z-index: 6;
 }
 
 .event-form-card {
