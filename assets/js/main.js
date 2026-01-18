@@ -4,7 +4,7 @@ const state = {
   currentRole: 'profesores',
   currentMonth: defaultDate.getMonth(),
   currentYear: defaultDate.getFullYear(),
-  selectedDate: null,
+  selectedDate: '2026-09-03',
   editingEventIndex: null,
   storeCategory: 'papeleria',
   storeTab: 'catalog',
@@ -63,7 +63,23 @@ const eventColors = {
 };
 const defaultEventColor = '#2e6edb';
 
-const calendarEvents = {};
+const calendarEvents = {
+  '2026-09-01': [
+    { subject: 'Historia', time: '10:00 - 11:30', color: '#8b5cf6' },
+    { subject: 'Inglés', time: '12:00 - 13:00', color: '#d44bd4' },
+  ],
+  '2026-09-03': [
+    { subject: 'Matemáticas', time: '16:00 - 17:30', color: '#f3bc1b' },
+    { subject: 'Castellano', time: '18:00 - 19:00', color: '#2e6edb' },
+  ],
+  '2026-09-04': [
+    { subject: 'Química', time: '09:00 - 10:00', color: '#20b07f' },
+  ],
+  '2026-09-07': [
+    { subject: 'Valenciano', time: '11:00 - 12:30', color: '#e52e2e' },
+    { subject: 'Física', time: '15:30 - 17:00', color: '#2e6edb' },
+  ],
+};
 
 const sidebarToggleClass = 'sidebar-open';
 const sidebarClosingClass = 'sidebar-closing';
