@@ -580,11 +580,12 @@ function positionCalendarEvents() {
   if (!panel) return;
   const panelRect = panel.getBoundingClientRect();
   const dayRect = dayEl.getBoundingClientRect();
+  const gridRect = grid.getBoundingClientRect();
   const topOffset = dayRect.bottom - panelRect.top + 8;
-  const leftOffset = dayRect.left - panelRect.left;
+  const leftOffset = gridRect.left - panelRect.left;
   container.style.top = `${topOffset}px`;
   container.style.left = `${leftOffset}px`;
-  container.style.width = `${dayRect.width}px`;
+  container.style.width = `${gridRect.width}px`;
 }
 
 function renderMaterials() {
