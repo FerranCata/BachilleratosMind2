@@ -330,6 +330,15 @@ function setupNavigation() {
       closeSidebarForNarrow();
     });
   });
+
+  const brandLink = document.getElementById('brandLink');
+  if (brandLink) {
+    brandLink.addEventListener('click', () => {
+      state.currentSection = 'inicio';
+      updateNavigation();
+      closeSidebarForNarrow();
+    });
+  }
 }
 
 function fillSelectOptions() {
