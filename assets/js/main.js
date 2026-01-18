@@ -4,7 +4,7 @@ const state = {
   currentRole: 'profesores',
   currentMonth: defaultDate.getMonth(),
   currentYear: defaultDate.getFullYear(),
-  selectedDate: '2026-09-03',
+  selectedDate: null,
   editingEventIndex: null,
   storeCategory: 'papeleria',
   storeTab: 'catalog',
@@ -369,6 +369,7 @@ function renderCalendar() {
     const iso = toIsoDate(date);
     const dayEl = document.createElement('div');
     dayEl.className = 'calendar-day ' + (isCurrentMonth ? '' : 'inactive');
+    dayEl.dataset.date = iso;
     if (state.selectedDate === iso) dayEl.classList.add('selected');
     if (iso === toIsoDate(new Date())) dayEl.classList.add('today');
     const events = calendarEvents[iso] || [];
@@ -402,33 +403,40 @@ function renderCalendar() {
 
 function renderDayEvents() {
   const container = document.getElementById('calendarEvents');
+  const list = document.getElementById('calendarEventsList');
+  const dateLabel = document.getElementById('calendarEventsDate');
   if (!container) return;
-  const dayEvents = calendarEvents[state.selectedDate] || [];
   if (!state.selectedDate) {
-    container.innerHTML = '<div class="text-muted">Selecciona un día para ver eventos.</div>';
+    container.classList.add('d-none');
+    if (list) list.innerHTML = '';
+    if (dateLabel) dateLabel.textContent = '';
     return;
   }
+  if (!list) return;
+  const dayEvents = calendarEvents[state.selectedDate] || [];
+  container.classList.remove('d-none');
+  if (dateLabel) dateLabel.textContent = formatDate(state.selectedDate);
   if (dayEvents.length === 0) {
-    container.innerHTML = '<div class="text-muted">No hay eventos para esta fecha.</div>';
-    return;
-  }
-  container.innerHTML = dayEvents.map((ev, idx) => {
-    const color = getEventColor(ev);
-    return `
-    <div class="event-card" style="border-left-color:${color}" data-index="${idx}">
-      <i class="fa-regular fa-calendar" style="color:${color}"></i>
-      <div>
-        <p class="event-title">Clase de ${ev.subject}</p>
-        <small>${formatDate(state.selectedDate)} · ${ev.time || 'Horario por confirmar'}</small>
+    list.innerHTML = '<div class="text-muted">No hay eventos para esta fecha.</div>';
+  } else {
+    list.innerHTML = dayEvents.map((ev, idx) => {
+      const color = getEventColor(ev);
+      return `
+      <div class="event-card" style="border-left-color:${color}" data-index="${idx}">
+        <i class="fa-regular fa-calendar" style="color:${color}"></i>
+        <div>
+          <p class="event-title">Clase de ${ev.subject}</p>
+          <small>${formatDate(state.selectedDate)} · ${ev.time || 'Horario por confirmar'}</small>
+        </div>
+        <button class="icon-btn ms-auto edit-event-btn" data-index="${idx}" title="Editar evento">
+          <i class="fa-regular fa-pen-to-square"></i>
+        </button>
       </div>
-      <button class="icon-btn ms-auto edit-event-btn" data-index="${idx}" title="Editar evento">
-        <i class="fa-regular fa-pen-to-square"></i>
-      </button>
-    </div>
-  `;
-  }).join('');
+    `;
+    }).join('');
+  }
 
-  container.querySelectorAll('.edit-event-btn').forEach(btn => {
+  list.querySelectorAll('.edit-event-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const index = Number(btn.dataset.index);
       const selectedEvents = calendarEvents[state.selectedDate] || [];
@@ -437,6 +445,8 @@ function renderDayEvents() {
       toggleEventForm(true, { mode: 'edit', eventIndex: index, eventData });
     });
   });
+
+  positionCalendarEvents();
 }
 
 function formatDate(iso) {
@@ -463,7 +473,8 @@ function toggleEventForm(show, options = {}) {
   const timeInput = document.getElementById('eventTime');
   const colorInput = document.getElementById('eventColor');
   const submitBtn = document.getElementById('eventFormSubmit');
-  if (!overlay || !dateLabel || !subjectInput || !timeInput || !colorInput || !submitBtn) return;
+  const deleteBtn = document.getElementById('deleteEventBtn');
+  if (!overlay || !dateLabel || !subjectInput || !timeInput || !colorInput || !submitBtn || !deleteBtn) return;
   if (show) {
     const { mode = 'add', eventIndex = null, eventData = {} } = options;
     state.editingEventIndex = mode === 'edit' ? eventIndex : null;
@@ -474,6 +485,7 @@ function toggleEventForm(show, options = {}) {
     colorInput.value = getEventColor(eventData);
     updateEventColorSelection(colorInput.value);
     submitBtn.textContent = mode === 'edit' ? 'Guardar cambios' : 'Añadir';
+    deleteBtn.classList.toggle('d-none', mode !== 'edit');
     overlay.dataset.mode = mode;
     subjectInput.focus();
   } else {
@@ -481,6 +493,7 @@ function toggleEventForm(show, options = {}) {
     overlay.dataset.mode = '';
     state.editingEventIndex = null;
     submitBtn.textContent = 'Añadir';
+    deleteBtn.classList.add('d-none');
   }
 }
 
@@ -490,9 +503,10 @@ function handleAddEvent() {
   const cancelBtn = document.getElementById('cancelEvent');
   const closeBtn = document.getElementById('closeEventForm');
   const overlay = document.getElementById('eventFormOverlay');
+  const deleteBtn = document.getElementById('deleteEventBtn');
   const colorInput = document.getElementById('eventColor');
   const swatches = document.querySelectorAll('.color-swatch');
-  if (!addBtn || !form || !cancelBtn || !closeBtn || !overlay) return;
+  if (!addBtn || !form || !cancelBtn || !closeBtn || !overlay || !deleteBtn) return;
 
   if (colorInput && swatches.length) {
     swatches.forEach(btn => {
@@ -519,6 +533,19 @@ function handleAddEvent() {
   const closeForm = () => toggleEventForm(false);
   cancelBtn.addEventListener('click', closeForm);
   closeBtn.addEventListener('click', closeForm);
+  deleteBtn.addEventListener('click', () => {
+    if (!state.selectedDate) return;
+    const isEditMode = overlay.dataset.mode === 'edit' && state.editingEventIndex !== null;
+    if (!isEditMode) return;
+    const message = '¿Quieres eliminar este evento? Esta acción no se puede deshacer.';
+    if (!window.confirm(message)) return;
+    const events = calendarEvents[state.selectedDate] || [];
+    events.splice(state.editingEventIndex, 1);
+    if (events.length === 0) delete calendarEvents[state.selectedDate];
+    toggleEventForm(false);
+    renderCalendar();
+    renderDayEvents();
+  });
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -538,6 +565,26 @@ function handleAddEvent() {
     renderCalendar();
     renderDayEvents();
   });
+}
+
+function positionCalendarEvents() {
+  const container = document.getElementById('calendarEvents');
+  const grid = document.getElementById('calendarGrid');
+  if (!container || !grid || !state.selectedDate) return;
+  const dayEl = grid.querySelector(`.calendar-day[data-date="${state.selectedDate}"]`);
+  if (!dayEl) {
+    container.classList.add('d-none');
+    return;
+  }
+  const panel = grid.closest('.calendar-panel');
+  if (!panel) return;
+  const panelRect = panel.getBoundingClientRect();
+  const dayRect = dayEl.getBoundingClientRect();
+  const topOffset = dayRect.bottom - panelRect.top + 8;
+  const leftOffset = dayRect.left - panelRect.left;
+  container.style.top = `${topOffset}px`;
+  container.style.left = `${leftOffset}px`;
+  container.style.width = `${dayRect.width}px`;
 }
 
 function renderMaterials() {
@@ -1287,6 +1334,9 @@ function init() {
   renderChat();
   setupMessageInput();
   handleAddEvent();
+  window.addEventListener('resize', () => {
+    if (state.selectedDate) positionCalendarEvents();
+  });
 }
 
 document.addEventListener('DOMContentLoaded', init);

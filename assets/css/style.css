@@ -429,22 +429,33 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: absolute;
+  background: #ffffff;
+  z-index: 4;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
 }
 
-.calendar-actions {
+.calendar-events-header {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-.calendar-actions .fab {
+.calendar-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendar-events-header .fab {
   position: static;
   width: 46px;
   height: 46px;
   font-size: 18px;
 }
 
-.calendar-actions .fab i {
+.calendar-events-header .fab i {
   font-size: 18px;
 }
 
