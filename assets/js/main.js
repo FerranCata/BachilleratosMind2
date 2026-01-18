@@ -617,6 +617,19 @@ function handleAddEvent() {
   });
 }
 
+function setupDayEventsClose() {
+  const closeDayEventsBtn = document.getElementById('closeDayEvents');
+  if (!closeDayEventsBtn) return;
+
+  closeDayEventsBtn.addEventListener('click', () => {
+    if (!state.selectedDate) return;
+    state.selectedDate = null;
+    toggleEventForm(false);
+    renderCalendar();
+    renderDayEvents();
+  });
+}
+
 function positionCalendarEvents() {
   const container = document.getElementById('calendarEvents');
   const grid = document.getElementById('calendarGrid');
@@ -1385,6 +1398,7 @@ function init() {
   renderChat();
   setupMessageInput();
   handleAddEvent();
+  setupDayEventsClose();
   window.addEventListener('resize', () => {
     if (state.selectedDate) positionCalendarEvents();
   });
