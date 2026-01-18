@@ -4,7 +4,7 @@ const state = {
   currentRole: 'profesores',
   currentMonth: defaultDate.getMonth(),
   currentYear: defaultDate.getFullYear(),
-  selectedDate: '2026-09-03',
+  selectedDate: null,
   editingEventIndex: null,
   storeCategory: 'papeleria',
   storeTab: 'catalog',
@@ -360,7 +360,13 @@ function updateNavigation() {
 function setupNavigation() {
   document.querySelectorAll('.nav-item').forEach(btn => {
     btn.addEventListener('click', () => {
-      state.currentSection = btn.dataset.section;
+      const nextSection = btn.dataset.section;
+      const previousSection = state.currentSection;
+      state.currentSection = nextSection;
+      if (nextSection === 'calendario' && previousSection !== 'calendario') {
+        state.selectedDate = null;
+        renderCalendar();
+      }
       updateNavigation();
       closeSidebarForNarrow();
     });
