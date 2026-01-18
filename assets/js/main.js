@@ -66,10 +66,29 @@ const defaultEventColor = '#2e6edb';
 const calendarEvents = {};
 
 const sidebarToggleClass = 'sidebar-open';
+const sidebarClosingClass = 'sidebar-closing';
+const sidebarPanel = document.querySelector('.sidebar');
 
 const isNarrowScreen = () => window.matchMedia('(max-width: 1100px)').matches;
 
 const setSidebarOpen = (isOpen) => {
+  const wasOpen = document.body.classList.contains(sidebarToggleClass);
+  if (!isOpen && wasOpen && isNarrowScreen() && sidebarPanel) {
+    document.body.classList.add(sidebarClosingClass);
+    const handleTransitionEnd = (event) => {
+      if (event.propertyName !== 'transform') return;
+      document.body.classList.remove(sidebarClosingClass);
+      sidebarPanel.removeEventListener('transitionend', handleTransitionEnd);
+    };
+    sidebarPanel.addEventListener('transitionend', handleTransitionEnd);
+    window.setTimeout(() => {
+      document.body.classList.remove(sidebarClosingClass);
+      sidebarPanel.removeEventListener('transitionend', handleTransitionEnd);
+    }, 300);
+  }
+  if (isOpen) {
+    document.body.classList.remove(sidebarClosingClass);
+  }
   document.body.classList.toggle(sidebarToggleClass, isOpen);
 };
 
