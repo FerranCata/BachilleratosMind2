@@ -63,6 +63,13 @@ body {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.brand-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
 }
 
 .brand-logo {
@@ -1644,6 +1651,9 @@ body {
   }
   .sidebar-toggle {
     display: inline-flex;
+  }
+  .sidebar-open .sidebar-toggle {
+    display: none;
   }
   .sidebar-backdrop {
     display: block;
