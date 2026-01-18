@@ -86,7 +86,10 @@
                 <p class="text-muted small mb-1">Eventos del día</p>
                 <h5 class="mb-0" id="calendarEventsDate"></h5>
               </div>
-              <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i><span class="icon-text">Añadir</span></button>
+              <div class="d-flex align-items-center gap-2">
+                <button class="icon-btn" id="closeDayEvents" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i><span class="icon-text">Cerrar</span></button>
+                <button class="fab" id="addEventBtn" title="Añadir evento"><i class="fa-solid fa-plus"></i><span class="icon-text">Añadir</span></button>
+              </div>
             </div>
             <div class="calendar-events-list" id="calendarEventsList"></div>
           </div>
