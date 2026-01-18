@@ -1655,6 +1655,9 @@ body {
   .sidebar-open .sidebar-toggle {
     display: none;
   }
+  .sidebar-closing .sidebar-toggle {
+    display: none;
+  }
   .sidebar-backdrop {
     display: block;
     position: fixed;
