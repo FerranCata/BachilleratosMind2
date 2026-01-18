@@ -23,6 +23,8 @@
         <button class="nav-item active" data-section="inicio"><i class="fa-solid fa-house"></i><span>Inicio</span><i class="fa-solid fa-chevron-right"></i></button>
         <button class="nav-item" data-section="calendario"><i class="fa-regular fa-calendar-days"></i><span>Calendario</span><i class="fa-solid fa-chevron-right"></i></button>
         <button class="nav-item" data-section="materiales"><i class="fa-solid fa-folder-open"></i><span>Materiales</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="ayuda"><i class="fa-regular fa-circle-question"></i><span>Ayuda</span><i class="fa-solid fa-chevron-right"></i></button>
+        <button class="nav-item" data-section="calificaciones"><i class="fa-solid fa-clipboard-list"></i><span>Calificaciones</span><i class="fa-solid fa-chevron-right"></i></button>
         <button class="nav-item" data-section="clases"><i class="fa-solid fa-chalkboard-user"></i><span>Clases de Refuerzo</span><i class="fa-solid fa-chevron-right"></i></button>
         <button class="nav-item" data-section="tienda"><i class="fa-solid fa-bag-shopping"></i><span>Tienda</span><i class="fa-solid fa-chevron-right"></i></button>
         <button class="nav-item" data-section="comunicacion"><i class="fa-regular fa-comments"></i><span>Comunicación</span><i class="fa-solid fa-chevron-right"></i></button>
@@ -161,6 +163,126 @@
                 <button class="fab-menu-item" data-action="new-folder"><i class="fa-solid fa-folder-plus"></i> Crear carpeta</button>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="ayuda" aria-label="Ayuda básica">
+        <div class="card-panel help-panel">
+          <h2 class="section-title">Ayuda básica</h2>
+          <p class="text-muted mb-4">Todo lo esencial para empezar y resolver dudas rápidas dentro de la plataforma.</p>
+          <div class="help-grid">
+            <div class="help-card">
+              <div class="help-icon"><i class="fa-solid fa-compass"></i></div>
+              <h3>Primeros pasos</h3>
+              <ul>
+                <li>Revisa las notificaciones del panel de inicio.</li>
+                <li>Consulta el calendario para ver actividades próximas.</li>
+                <li>Guarda tus materiales favoritos en la sección de archivos.</li>
+              </ul>
+            </div>
+            <div class="help-card">
+              <div class="help-icon"><i class="fa-solid fa-headset"></i></div>
+              <h3>Soporte rápido</h3>
+              <p class="mb-2">¿Necesitas ayuda inmediata? Usa estos canales:</p>
+              <div class="help-contact">
+                <span><i class="fa-solid fa-envelope"></i> soporte@bachilleratosmind.es</span>
+                <span><i class="fa-solid fa-phone"></i> +34 900 123 987</span>
+                <span><i class="fa-solid fa-clock"></i> L-V · 08:00 - 18:00</span>
+              </div>
+            </div>
+            <div class="help-card">
+              <div class="help-icon"><i class="fa-solid fa-lightbulb"></i></div>
+              <h3>Consejos de uso</h3>
+              <ul>
+                <li>Activa recordatorios de eventos para no olvidar fechas clave.</li>
+                <li>Descarga materiales antes de las clases en directo.</li>
+                <li>Usa la comunicación interna para dudas con profesores.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="help-footer">
+            <button class="btn btn-outline-primary">Ver guía completa</button>
+            <button class="btn btn-primary">Abrir ticket</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section d-none" id="calificaciones" aria-label="Calificaciones de exámenes">
+        <div class="card-panel grades-panel">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+              <h2 class="section-title mb-1">Calificaciones de exámenes</h2>
+              <p class="text-muted mb-0">Consulta tu progreso por asignatura y el estado de revisión.</p>
+            </div>
+            <button class="btn btn-outline-primary"><i class="fa-solid fa-download me-2"></i>Descargar boletín</button>
+          </div>
+          <div class="grades-grid">
+            <div class="grade-summary">
+              <h3>Promedio actual</h3>
+              <p class="grade-score">8,4</p>
+              <span class="badge text-bg-success">+0,3 respecto al trimestre anterior</span>
+            </div>
+            <div class="grade-summary">
+              <h3>Exámenes pendientes</h3>
+              <p class="grade-score">2</p>
+              <span class="text-muted">Historia · Química</span>
+            </div>
+            <div class="grade-summary">
+              <h3>Solicitudes de revisión</h3>
+              <p class="grade-score">1</p>
+              <span class="text-muted">Matemáticas II (en curso)</span>
+            </div>
+          </div>
+          <div class="grades-table-wrapper">
+            <table class="table grades-table">
+              <thead>
+                <tr>
+                  <th>Asignatura</th>
+                  <th>Último examen</th>
+                  <th>Nota</th>
+                  <th>Observaciones</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Matemáticas II</td>
+                  <td>20/09/2026</td>
+                  <td><span class="grade-pill high">9,2</span></td>
+                  <td>Excelente resolución de problemas.</td>
+                  <td><span class="status-pill warning">Revisión solicitada</span></td>
+                </tr>
+                <tr>
+                  <td>Lengua Castellana</td>
+                  <td>18/09/2026</td>
+                  <td><span class="grade-pill high">8,8</span></td>
+                  <td>Muy buen análisis textual.</td>
+                  <td><span class="status-pill success">Publicado</span></td>
+                </tr>
+                <tr>
+                  <td>Física</td>
+                  <td>15/09/2026</td>
+                  <td><span class="grade-pill medium">7,6</span></td>
+                  <td>Revisar unidades y notación.</td>
+                  <td><span class="status-pill success">Publicado</span></td>
+                </tr>
+                <tr>
+                  <td>Historia</td>
+                  <td>Próximo</td>
+                  <td><span class="grade-pill pending">-</span></td>
+                  <td>Simulacro programado.</td>
+                  <td><span class="status-pill pending">Pendiente</span></td>
+                </tr>
+                <tr>
+                  <td>Química</td>
+                  <td>Próximo</td>
+                  <td><span class="grade-pill pending">-</span></td>
+                  <td>Preparación en curso.</td>
+                  <td><span class="status-pill pending">Pendiente</span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
