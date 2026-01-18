@@ -913,7 +913,7 @@ function renderCart() {
               <button class="increase" data-id="${item.productId}" aria-label="Aumentar cantidad">+</button>
             </div>
             <div class="fw-bold">${formatCurrency(product.price * item.quantity)}</div>
-            <button class="icon-btn remove-item" data-id="${item.productId}" title="Eliminar del carrito"><i class="fa-solid fa-trash"></i></button>
+            <button class="icon-btn remove-item" data-id="${item.productId}" title="Eliminar del carrito">🗑</button>
           </div>
         </div>
       `;
